@@ -1,20 +1,40 @@
 import { RAGSystem } from "../src";
+import { MarkdownLoader } from "../src/documents/loader";
 
 async function example() {
   // Create a RAG system with default configuration
   const rag = new RAGSystem();
-  // await rag.loadMarkdownDocuments("docs");
 
-  const queries = ["I am not sure about how to invest my money"];
+  // Clear existing documents
+  await rag.clearDocuments();
+
+  // Load documents
+  const loader = new MarkdownLoader("docs");
+  const documents = await loader.loadDocuments();
+  console.log(`Found ${documents.length} documents`);
+
+  // Add documents to RAG system
+  await rag.loadMarkdownDocuments("docs");
+
+  const queries = ["I want to study Software Engineering"];
 
   for (const query of queries) {
     console.log(`\nQuery: ${query}`);
-    console.log("Results:\n");
     const results = await rag.findSimilarDocuments(query);
+
+    if (results.length === 0) {
+      console.log("No matching documents found.");
+      continue;
+    }
+
+    console.log(`\nFound ${results.length} matching documents:\n`);
     for (const result of results) {
       console.log(`Similarity: ${result.score.toFixed(4)}`);
-      console.log("Content:", result.document.id);
-      console.log("\n");
+      console.log(`Document: ${result.document.id}\n`);
+      console.log("Content:");
+      console.log("--------");
+      console.log(result.document.content);
+      console.log("--------\n");
     }
   }
 }

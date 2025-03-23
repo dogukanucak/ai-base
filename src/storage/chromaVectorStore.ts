@@ -8,7 +8,7 @@ export class ChromaVectorStore implements VectorStore {
   private collectionName: string;
   private similarityThreshold: number;
 
-  constructor(collectionName: string = "ai_base", similarityThreshold: number = 0.8) {
+  constructor(collectionName: string = "ai_base", similarityThreshold: number = 0.5) {
     this.client = new ChromaClient({
       path: "http://localhost:8000",
     });
@@ -16,18 +16,11 @@ export class ChromaVectorStore implements VectorStore {
     this.similarityThreshold = similarityThreshold;
   }
 
-  private async ensureCollection() {
+  private async ensureCollection(): Promise<void> {
     if (!this.collection) {
-      try {
-        this.collection = await this.client.getOrCreateCollection({
-          name: this.collectionName,
-          metadata: {
-            "hnsw:space": "cosine",
-          },
-        });
-      } catch (error) {
-        throw error;
-      }
+      this.collection = await this.client.getOrCreateCollection({
+        name: this.collectionName,
+      });
     }
   }
 
@@ -49,6 +42,7 @@ export class ChromaVectorStore implements VectorStore {
         documents: [document.content],
       });
     } catch (error) {
+      console.error("Error adding document:", error);
       throw error;
     }
   }
@@ -95,6 +89,7 @@ export class ChromaVectorStore implements VectorStore {
 
       return searchResults;
     } catch (error) {
+      console.error("Error searching documents:", error);
       throw error;
     }
   }
@@ -104,8 +99,19 @@ export class ChromaVectorStore implements VectorStore {
   }
 
   async clear(): Promise<void> {
-    // No-op as per discussion - DB clearing will be handled manually
-    return;
+    try {
+      const collections = await this.client.listCollections();
+      const exists = collections.some((c) => this.collectionName === c);
+
+      if (exists) {
+        await this.client.deleteCollection({ name: this.collectionName });
+      }
+
+      this.collection = null;
+    } catch (error) {
+      console.error("Error clearing collection:", error);
+      throw error;
+    }
   }
 
   setSimilarityThreshold(threshold: number): void {

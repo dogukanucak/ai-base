@@ -5,12 +5,12 @@
   "vectorStore": {
     "type": "chroma",
     "collectionName": "ai_base",
-    "similarityThreshold": 0.7
+    "similarityThreshold": 0.5
   },
   "documentLoader": {
     "type": "markdown",
     "path": "docs",
-    "enabled": false
+    "enabled": true
   },
   "openAI": {
     "model": "gpt-4-turbo-preview",

@@ -15,25 +15,36 @@ export class MarkdownLoader {
   private docsPath: string;
 
   constructor(docsPath: string = "docs") {
-    this.docsPath = docsPath;
+    this.docsPath = path.resolve(docsPath);
   }
 
   async loadDocuments(): Promise<Document[]> {
-    const mdFiles = await glob("**/*.md", { cwd: this.docsPath });
+    const mdFiles = await glob("*.md", {
+      cwd: this.docsPath,
+      absolute: true,
+      nodir: true,
+      dot: false,
+    });
+
     const documents: Document[] = [];
 
     for (const file of mdFiles) {
-      const content = await readFile(path.join(this.docsPath, file), "utf-8");
-      const { attributes, body } = frontMatter<MarkdownAttributes>(content);
+      try {
+        const content = await readFile(file, "utf-8");
+        const { attributes, body } = frontMatter<MarkdownAttributes>(content);
+        const relativePath = path.relative(this.docsPath, file);
 
-      documents.push({
-        id: path.relative(this.docsPath, file), // Use relative path as ID
-        content: body.trim(),
-        metadata: {
-          ...attributes,
-          filepath: file,
-        },
-      });
+        documents.push({
+          id: relativePath,
+          content: body.trim(),
+          metadata: {
+            ...attributes,
+            filepath: relativePath,
+          },
+        });
+      } catch (error) {
+        console.error("Error processing file:", file, error);
+      }
     }
 
     return documents;

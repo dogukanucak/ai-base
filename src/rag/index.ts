@@ -18,11 +18,7 @@ export class RAGSystem {
   }
 
   async initialize(): Promise<void> {
-    try {
-      await this.vectorStore.clear();
-    } catch (error) {
-      throw error;
-    }
+    await this.vectorStore.clear();
   }
 
   async addDocuments(documents: Document[]): Promise<void> {
@@ -39,7 +35,7 @@ export class RAGSystem {
 
   async loadMarkdownDocuments(directory: string): Promise<void> {
     try {
-      await this.initialize(); // Clear existing documents first
+      await this.initialize();
       const documents = await this.documentLoader.loadDocuments();
       await this.addDocuments(documents);
     } catch (error) {
@@ -49,10 +45,8 @@ export class RAGSystem {
 
   async findSimilarDocuments(query: string, limit: number = 5): Promise<SearchResult[]> {
     try {
-      console.log(`Searching for documents similar to: "${query}"`);
       const queryVector = await this.embeddings.generateEmbedding(query);
       const results = await this.vectorStore.search(queryVector, limit);
-      console.log(`Found ${results.length} similar documents.`);
       return results;
     } catch (error) {
       console.error("Failed to find similar documents:", error);

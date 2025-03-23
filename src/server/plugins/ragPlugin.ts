@@ -24,6 +24,27 @@ export class RAGPlugin implements Plugin {
       });
     }
 
+    // Register document loading endpoint
+    app.post("/api/documents/load", async (req, res) => {
+      try {
+        const { path = "docs" } = req.body;
+
+        // Load documents from the specified path
+        await this.rag.loadMarkdownDocuments(path);
+
+        res.json({
+          success: true,
+          message: `Documents loaded successfully from ${path}`,
+        });
+      } catch (error) {
+        console.error("Error loading documents:", error);
+        res.status(500).json({
+          error: "Failed to load documents",
+          details: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
+    });
+
     // Load documents if enabled
     if (config.documentLoader.enabled) {
       await this.rag.loadMarkdownDocuments(config.documentLoader.path);
