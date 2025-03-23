@@ -8,7 +8,7 @@ export class ChromaVectorStore implements VectorStore {
   private collectionName: string;
   private similarityThreshold: number;
 
-  constructor(collectionName: string = "ai_base", similarityThreshold: number = 0.6) {
+  constructor(collectionName: string = "ai_base", similarityThreshold: number = 0.8) {
     this.client = new ChromaClient({
       path: "http://localhost:8000",
     });

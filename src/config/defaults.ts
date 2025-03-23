@@ -7,7 +7,7 @@ export const defaultConfig: RAGConfig = {
   vectorStore: {
     type: "chroma",
     collectionName: "ai_base",
-    similarityThreshold: 0.7,
+    similarityThreshold: 0.8,
   },
   documentLoader: {
     type: "markdown",
