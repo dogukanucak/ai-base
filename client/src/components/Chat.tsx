@@ -10,11 +10,11 @@ export default function Chat() {
   const [isLoading, setIsLoading] = createSignal(false);
   const [isTyping, setIsTyping] = createSignal(false);
 
-  const handleSubmit = async (e: Event) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: Event) => {
+    e?.preventDefault();
     const text = inputValue().trim();
     
-    if (!text) return;
+    if (!text || isLoading()) return;
 
     // Add user message
     const userMessage: Message = {
@@ -52,6 +52,13 @@ export default function Chat() {
       setMessages([...messages(), errorMessage]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit();
     }
   };
 
@@ -113,7 +120,8 @@ export default function Chat() {
         <textarea
           value={inputValue()}
           onInput={(e) => setInputValue(e.currentTarget.value)}
-          placeholder="Type your message here..."
+          onKeyDown={handleKeyDown}
+          placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
           disabled={isLoading()}
         />
         <button type="submit" disabled={isLoading() || !inputValue().trim()}>
