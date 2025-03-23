@@ -1,0 +1,26 @@
+export interface Document {
+  id: string;
+  content: string;
+  metadata?: Record<string, any>;
+}
+
+export interface SearchResult {
+  document: Document;
+  score: number;
+}
+
+export interface EmbeddingGenerator {
+  generateEmbedding(text: string): Promise<number[]>;
+}
+
+export interface VectorStore {
+  add(document: Document, vector: number[]): Promise<void>;
+  search(queryVector: number[], limit: number): Promise<SearchResult[]>;
+  load(): Promise<void>;
+  clear(): Promise<void>;
+  setSimilarityThreshold?(threshold: number): void;
+}
+
+export interface DocumentLoader {
+  loadDocuments(): Promise<Document[]>;
+}
