@@ -5,7 +5,7 @@
   "vectorStore": {
     "type": "chroma",
     "collectionName": "ai_base",
-    "similarityThreshold": 0.5
+    "similarityThreshold": 0.2
   },
   "documentLoader": {
     "type": "markdown",

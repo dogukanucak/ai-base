@@ -16,7 +16,7 @@ async function example() {
   // Add documents to RAG system
   await rag.loadMarkdownDocuments("docs");
 
-  const queries = ["I want to study Software Engineering"];
+  const queries = ["Software Engineering department in university"];
 
   for (const query of queries) {
     console.log(`\nQuery: ${query}`);

@@ -5,6 +5,7 @@ import { RAGFactory } from "../factory";
 import { ChromaVectorStore } from "../storage/chromaVectorStore";
 import { TransformersEmbeddingGenerator } from "../embeddings/generator";
 import { MarkdownLoader } from "../documents/loader";
+import dotenv from "dotenv";
 
 export class RAGSystem {
   private embeddings: EmbeddingGenerator;
@@ -12,8 +13,15 @@ export class RAGSystem {
   private documentLoader: DocumentLoader;
 
   constructor() {
+    dotenv.config();
+    const similarityThreshold = parseFloat(process.env.SIMILARITY_THRESHOLD || "0.5");
+
     this.embeddings = new TransformersEmbeddingGenerator();
-    this.vectorStore = new ChromaVectorStore();
+    this.vectorStore = RAGFactory.createVectorStore({
+      type: "chroma",
+      collectionName: "ai_base",
+      similarityThreshold,
+    });
     this.documentLoader = new MarkdownLoader();
   }
 
