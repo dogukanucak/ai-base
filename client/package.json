@@ -1,0 +1,22 @@
+{
+  "name": "ai-chat-client",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "solid-js": "^1.8.15",
+    "@solidjs/router": "^0.13.1",
+    "sass": "^1.72.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2",
+    "vite": "^5.1.6",
+    "vite-plugin-solid": "^2.10.1",
+    "@types/node": "^20.11.28"
+  }
+} 
