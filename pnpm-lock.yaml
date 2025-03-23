@@ -11,6 +11,9 @@ dependencies:
   chromadb:
     specifier: ^2.0.1
     version: 2.0.1
+  dotenv:
+    specifier: ^16.4.7
+    version: 16.4.7
   faiss-node:
     specifier: ^0.5.1
     version: 0.5.1
@@ -20,6 +23,9 @@ dependencies:
   glob:
     specifier: ^11.0.1
     version: 11.0.1
+  openai:
+    specifier: ^4.89.0
+    version: 4.89.0
 
 devDependencies:
   '@types/node':
@@ -1539,6 +1545,11 @@ packages:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
     dev: true
+
+  /dotenv@16.4.7:
+    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+    engines: {node: '>=12'}
+    dev: false
 
   /dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}

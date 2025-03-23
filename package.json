@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "ts-node examples/basic.ts",
+    "start:openai": "ts-node examples/openai-rag.ts",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "chroma": "chroma run --path ./data/chroma"
@@ -15,9 +16,11 @@
   "dependencies": {
     "@xenova/transformers": "^2.17.2",
     "chromadb": "^2.0.1",
+    "dotenv": "^16.4.7",
     "faiss-node": "^0.5.1",
     "front-matter": "^4.0.2",
-    "glob": "^11.0.1"
+    "glob": "^11.0.1",
+    "openai": "^4.89.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
