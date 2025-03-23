@@ -6,7 +6,7 @@ export const defaultConfig: RAGConfig = {
   },
   vectorStore: {
     type: "chroma",
-    collectionName: "custom_rag",
+    collectionName: "ai_base",
     similarityThreshold: 0.7,
   },
   documentLoader: {

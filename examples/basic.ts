@@ -5,7 +5,7 @@ async function example() {
   const rag = new RAGSystem();
   await rag.loadMarkdownDocuments("docs");
 
-  const queries = ["Dogs?"];
+  const queries = ["Dogs are incredible companions that have been"];
 
   for (const query of queries) {
     console.log(`\nQuery: ${query}`);
