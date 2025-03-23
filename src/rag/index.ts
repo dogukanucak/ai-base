@@ -19,24 +19,18 @@ export class RAGSystem {
 
   async initialize(): Promise<void> {
     try {
-      console.log("Initializing RAG system...");
       await this.vectorStore.clear();
-      console.log("Cleared existing documents.");
     } catch (error) {
-      console.error("Failed to initialize RAG system:", error);
       throw error;
     }
   }
 
   async addDocuments(documents: Document[]): Promise<void> {
     try {
-      console.log(`Adding ${documents.length} documents...`);
       for (const document of documents) {
-        console.log(`Processing document: ${document.id}`);
         const vector = await this.embeddings.generateEmbedding(document.content);
         await this.vectorStore.add(document, vector);
       }
-      console.log("Finished adding documents.");
     } catch (error) {
       console.error("Failed to add documents:", error);
       throw error;
@@ -45,13 +39,10 @@ export class RAGSystem {
 
   async loadMarkdownDocuments(directory: string): Promise<void> {
     try {
-      console.log(`Loading markdown documents from ${directory}...`);
       await this.initialize(); // Clear existing documents first
       const documents = await this.documentLoader.loadDocuments();
-      console.log(`Found ${documents.length} documents to process.`);
       await this.addDocuments(documents);
     } catch (error) {
-      console.error("Failed to load markdown documents:", error);
       throw error;
     }
   }

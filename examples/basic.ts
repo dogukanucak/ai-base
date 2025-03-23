@@ -3,9 +3,9 @@ import { RAGSystem } from "../src";
 async function example() {
   // Create a RAG system with default configuration
   const rag = new RAGSystem();
-  await rag.loadMarkdownDocuments("docs");
+  // await rag.loadMarkdownDocuments("docs");
 
-  const queries = ["Tell me about a good fitness"];
+  const queries = ["I am not sure about how to invest my money"];
 
   for (const query of queries) {
     console.log(`\nQuery: ${query}`);
@@ -13,7 +13,7 @@ async function example() {
     const results = await rag.findSimilarDocuments(query);
     for (const result of results) {
       console.log(`Similarity: ${result.score.toFixed(4)}`);
-      console.log("Content:", result.document.content);
+      console.log("Content:", result.document.id);
       console.log("\n");
     }
   }
