@@ -1,41 +1,28 @@
-import { TextSplitter } from "@langchain/core/text_splitter";
-import { CharacterTextSplitter } from "langchain/text_splitter";
-import { MarkdownTextSplitter } from "langchain/text_splitter";
-import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { TokenTextSplitter } from "langchain/text_splitter";
+import { TextSplitter, CharacterTextSplitter, RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { ChunkingConfig } from "../config/types";
 
 export class TextSplitterFactory {
   static create(config: ChunkingConfig): TextSplitter {
-    const { type, chunkSize, chunkOverlap, separators, encodingName, tokenBudget } = config;
-
-    switch (type) {
+    switch (config.type) {
       case "markdown":
-        return new MarkdownTextSplitter({
-          chunkSize,
-          chunkOverlap,
+        return new RecursiveCharacterTextSplitter({
+          chunkSize: config.chunkSize || 500,
+          chunkOverlap: config.chunkOverlap || 50,
+          separators: ["## ", "# ", "\n### ", "\n## ", "\n# ", "\n\n", "\n", ". ", " "],
+          keepSeparator: false,
         });
 
       case "recursive":
         return new RecursiveCharacterTextSplitter({
-          chunkSize,
-          chunkOverlap,
-          separators: separators || ["\n\n", "\n", " ", ""],
+          chunkSize: config.chunkSize || 1000,
+          chunkOverlap: config.chunkOverlap || 200,
         });
 
-      case "token":
-        return new TokenTextSplitter({
-          encodingName: encodingName || "cl100k_base",
-          chunkSize,
-          chunkOverlap,
-          disallowedSpecial: [],
-        });
-
-      case "character":
       default:
         return new CharacterTextSplitter({
-          chunkSize,
-          chunkOverlap,
+          separator: "\n\n",
+          chunkSize: config.chunkSize || 1000,
+          chunkOverlap: config.chunkOverlap || 200,
         });
     }
   }

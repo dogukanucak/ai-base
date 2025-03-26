@@ -9,7 +9,7 @@ export class ResponseFormatter {
     const response: QueryResponse = {
       query,
       documents: relevantResults.map((result) => ({
-        content: this.truncateContent(result.document.content, config.console.truncateDocuments, config.console.documentPreviewLength),
+        content: result.document.content,
         similarity: result.score,
         id: result.document.id,
         isRelevant: result.score >= DEFAULT_SIMILARITY_THRESHOLD,

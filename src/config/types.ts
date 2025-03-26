@@ -3,12 +3,15 @@ export interface EmbeddingConfig {
 }
 
 export interface ChunkingConfig {
-  type: "character" | "markdown" | "recursive" | "token";
-  chunkSize: number;
-  chunkOverlap: number;
+  type: "character" | "markdown" | "recursive";
+  chunkSize?: number;
+  chunkOverlap?: number;
   separators?: string[];
   encodingName?: string;
-  tokenBudget?: number;
+  tokenBudget?: {
+    maxTokens: number;
+    minLength: number;
+  };
 }
 
 export interface RetrievalConfig {

@@ -7,8 +7,8 @@ export class ConfigLoader {
   private static instance: ConfigLoader;
   private config: RAGConfig;
 
-  private constructor() {
-    this.config = { ...defaultConfig };
+  private constructor(config: Partial<RAGConfig> = {}) {
+    this.config = { ...defaultConfig, ...config };
   }
 
   public static getInstance(): ConfigLoader {
@@ -28,59 +28,48 @@ export class ConfigLoader {
     }
   }
 
-  public loadFromEnv(): void {
-    const envConfig: Partial<RAGConfig> = {
+  public loadFromEnv(): RAGConfig {
+    return {
       embedding: {
-        ...this.config.embedding,
         modelName: process.env.EMBEDDING_MODEL || this.config.embedding.modelName,
       },
       chunking: {
-        ...this.config.chunking,
-        type: (process.env.CHUNKING_TYPE || this.config.chunking.type) as any,
+        type: (process.env.CHUNKING_TYPE as RAGConfig["chunking"]["type"]) || this.config.chunking.type,
         chunkSize: parseInt(process.env.CHUNK_SIZE || String(this.config.chunking.chunkSize)),
         chunkOverlap: parseInt(process.env.CHUNK_OVERLAP || String(this.config.chunking.chunkOverlap)),
-        separators: process.env.CHUNK_SEPARATORS ? JSON.parse(process.env.CHUNK_SEPARATORS) : this.config.chunking.separators,
-        encodingName: process.env.TOKEN_ENCODING || this.config.chunking.encodingName,
-        tokenBudget: parseInt(process.env.TOKEN_BUDGET || String(this.config.chunking.tokenBudget)),
+        separators: process.env.CHUNK_SEPARATORS ? process.env.CHUNK_SEPARATORS.split(",") : this.config.chunking.separators,
       },
       retrieval: {
-        ...this.config.retrieval,
-        type: (process.env.RETRIEVAL_TYPE || this.config.retrieval.type) as any,
+        type: (process.env.RETRIEVAL_TYPE as RAGConfig["retrieval"]["type"]) || this.config.retrieval.type,
         fetchK: parseInt(process.env.FETCH_K || String(this.config.retrieval.fetchK)),
-        lambda: parseFloat(process.env.LAMBDA_MULT || String(this.config.retrieval.lambda)),
+        lambda: parseFloat(process.env.LAMBDA || String(this.config.retrieval.lambda)),
         scoreThreshold: parseFloat(process.env.SCORE_THRESHOLD || String(this.config.retrieval.scoreThreshold)),
-        useReranking: process.env.USE_RERANKING === "true",
+        useReranking: process.env.USE_RERANKING === "true" || this.config.retrieval.useReranking,
         queryCount: parseInt(process.env.QUERY_COUNT || String(this.config.retrieval.queryCount)),
       },
       vectorStore: {
-        ...this.config.vectorStore,
+        type: (process.env.VECTOR_STORE_TYPE as RAGConfig["vectorStore"]["type"]) || this.config.vectorStore.type,
         collectionName: process.env.COLLECTION_NAME || this.config.vectorStore.collectionName,
-        url: process.env.CHROMA_URL || this.config.vectorStore.url,
+        url: process.env.VECTOR_STORE_URL || this.config.vectorStore.url,
       },
       documentLoader: {
-        ...this.config.documentLoader,
-        type: (process.env.DOCUMENT_TYPE || this.config.documentLoader.type) as any,
-        path: process.env.DOCUMENTS_PATH || this.config.documentLoader.path,
-        enabled: process.env.LOAD_DOCUMENTS === "true",
+        type: (process.env.DOCUMENT_TYPE as RAGConfig["documentLoader"]["type"]) || this.config.documentLoader.type,
+        path: process.env.DOCUMENT_PATH || this.config.documentLoader.path,
+        enabled: process.env.DOCUMENT_LOADER_ENABLED === "true" || this.config.documentLoader.enabled,
       },
       openAI: {
-        ...this.config.openAI,
-        enabled: process.env.USE_OPENAI === "true",
-        apiKey: process.env.OPENAI_API_KEY,
         model: process.env.OPENAI_MODEL || this.config.openAI.model,
-        maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS || String(this.config.openAI.maxTokens)),
-        temperature: parseFloat(process.env.OPENAI_TEMPERATURE || String(this.config.openAI.temperature)),
+        maxTokens: parseInt(process.env.MAX_TOKENS || String(this.config.openAI.maxTokens)),
+        temperature: parseFloat(process.env.TEMPERATURE || String(this.config.openAI.temperature)),
+        enabled: process.env.OPENAI_ENABLED === "true" || this.config.openAI.enabled,
       },
       console: {
-        ...this.config.console,
-        maxResponseLength: parseInt(process.env.CONSOLE_MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength)),
-        showDebugInfo: process.env.SHOW_DEBUG_INFO === "true",
-        truncateDocuments: process.env.TRUNCATE_DOCUMENTS !== "false",
+        maxResponseLength: parseInt(process.env.MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength)),
+        showDebugInfo: process.env.SHOW_DEBUG_INFO === "true" || this.config.console.showDebugInfo,
+        truncateDocuments: process.env.TRUNCATE_DOCUMENTS === "true" || this.config.console.truncateDocuments,
         documentPreviewLength: parseInt(process.env.DOCUMENT_PREVIEW_LENGTH || String(this.config.console.documentPreviewLength)),
       },
     };
-
-    this.mergeConfig(envConfig);
   }
 
   public updateConfig(partialConfig: Partial<RAGConfig>): void {
