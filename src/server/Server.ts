@@ -18,17 +18,14 @@ export class Server {
 
   async start(port: number = 3000): Promise<void> {
     try {
-      // Register CORS
       await this.app.register(cors, {
         origin: true,
       });
 
-      // Register plugins
       for (const plugin of this.plugins) {
         await plugin.register(this.app, this.config);
       }
 
-      // Start server
       await this.app.listen({ port });
       console.log(`Server is running on port ${port}`);
     } catch (error) {
