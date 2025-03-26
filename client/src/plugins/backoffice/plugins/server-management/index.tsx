@@ -1,5 +1,6 @@
 import { Component } from 'solid-js';
 import { BackofficePlugin } from '../../types';
+import { ServerManagement } from './ServerManagement';
 
 const ServerManagementContent: Component = () => {
   return (
@@ -14,5 +15,5 @@ export class ServerManagementPlugin implements BackofficePlugin {
   id = 'server-management';
   name = 'Server Management';
   icon = '🖥️';
-  content = () => <ServerManagementContent />;
+  content = ServerManagement;
 } 

@@ -1,0 +1,100 @@
+.serverManagement {
+  padding: var(--spacing-lg);
+}
+
+.statusCard {
+  background: var(--surface);
+  border-radius: 0.5rem;
+  padding: var(--spacing-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.statusHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+
+  h3 {
+    margin: 0;
+    font-size: var(--font-size-lg);
+  }
+}
+
+.statusIndicator {
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+
+  &.running {
+    background: #22c55e20;
+    color: #22c55e;
+  }
+
+  &.stopped {
+    background: #ef444420;
+    color: #ef4444;
+  }
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  span {
+    font-size: var(--font-size-lg);
+    font-weight: 500;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.actionButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.start {
+    background: #22c55e;
+    color: white;
+  }
+
+  &.stop {
+    background: #ef4444;
+    color: white;
+  }
+
+  &.restart {
+    background: #f59e0b;
+    color: white;
+  }
+} 

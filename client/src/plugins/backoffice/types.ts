@@ -6,3 +6,20 @@ export interface BackofficePlugin {
   icon: string;
   content: Component;
 }
+
+export interface ServerStatus {
+  isRunning: boolean;
+  uptime: number;
+  memory: {
+    used: number;
+    total: number;
+  };
+  cpu: number;
+}
+
+export interface EnvVariable {
+  key: string;
+  value: string;
+  isSecret?: boolean;
+  description?: string;
+}
