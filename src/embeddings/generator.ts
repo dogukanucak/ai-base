@@ -1,19 +1,14 @@
-import { pipeline } from "@xenova/transformers";
-import { EmbeddingGenerator } from "../types";
+import { pipeline, Pipeline } from "@xenova/transformers";
+import { Embeddings } from "@langchain/core/embeddings";
+import { AsyncCaller } from "@langchain/core/utils/async_caller";
+import type { FeatureExtractionPipeline } from "@xenova/transformers";
 
-type FeatureExtractionOutput = {
-  data: Float32Array;
-};
-
-type FeatureExtractionPipeline = {
-  (text: string, options: { pooling: string; normalize: boolean }): Promise<FeatureExtractionOutput>;
-};
-
-export class TransformersEmbeddingGenerator implements EmbeddingGenerator {
+export class TransformersEmbeddingGenerator extends Embeddings {
   private model: FeatureExtractionPipeline | null = null;
   private modelName: string;
 
   constructor(modelName: string = "Xenova/all-MiniLM-L6-v2") {
+    super({});
     this.modelName = modelName;
   }
 
@@ -24,7 +19,18 @@ export class TransformersEmbeddingGenerator implements EmbeddingGenerator {
     return this.model;
   }
 
-  async generateEmbedding(text: string): Promise<number[]> {
+  async embedDocuments(texts: string[]): Promise<number[][]> {
+    const model = await this.initModel();
+    const embeddings = await Promise.all(
+      texts.map(async (text) => {
+        const output = await model(text, { pooling: "mean", normalize: true });
+        return Array.from(output.data);
+      })
+    );
+    return embeddings;
+  }
+
+  async embedQuery(text: string): Promise<number[]> {
     const model = await this.initModel();
     const output = await model(text, { pooling: "mean", normalize: true });
     return Array.from(output.data);

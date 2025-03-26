@@ -2,6 +2,8 @@ import { SearchResult } from "./SimilarityService";
 import { QueryResponse } from "../plugins/types";
 import { RAGConfig } from "../../config/types";
 
+const DEFAULT_SIMILARITY_THRESHOLD = 0.7;
+
 export class ResponseFormatter {
   format(query: string, searchResults: SearchResult[], relevantResults: SearchResult[], config: RAGConfig, aiResponse?: string): QueryResponse {
     const response: QueryResponse = {
@@ -10,12 +12,12 @@ export class ResponseFormatter {
         content: this.truncateContent(result.document.content, config.console.truncateDocuments, config.console.documentPreviewLength),
         similarity: result.score,
         id: result.document.id,
-        isRelevant: result.score >= config.vectorStore.similarityThreshold,
+        isRelevant: result.score >= DEFAULT_SIMILARITY_THRESHOLD,
       })),
       metadata: {
         totalResults: searchResults.length,
         relevantResults: relevantResults.length,
-        similarityThreshold: config.vectorStore.similarityThreshold,
+        similarityThreshold: DEFAULT_SIMILARITY_THRESHOLD,
         filteredOutResults: searchResults.length - relevantResults.length,
       },
     };

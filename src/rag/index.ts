@@ -1,40 +1,74 @@
-import { EmbeddingGenerator, VectorStore, DocumentLoader, Document, SearchResult } from "../types";
-import { RAGConfig } from "../config/types";
-import { defaultConfig } from "../config/defaults";
-import { RAGFactory } from "../factory";
-import { ChromaVectorStore } from "../storage/chromaVectorStore";
+import { Document as LangChainDocument } from "@langchain/core/documents";
+import { CharacterTextSplitter } from "langchain/text_splitter";
+import { Chroma } from "@langchain/community/vectorstores/chroma";
+import { Document, SearchResult } from "../types";
 import { TransformersEmbeddingGenerator } from "../embeddings/generator";
 import { MarkdownLoader } from "../documents/loader";
 import dotenv from "dotenv";
 
 export class RAGSystem {
-  private embeddings: EmbeddingGenerator;
-  private vectorStore: VectorStore;
-  private documentLoader: DocumentLoader;
+  private embeddings: TransformersEmbeddingGenerator;
+  private vectorStore!: Chroma;
+  private documentLoader: MarkdownLoader;
+  private textSplitter: CharacterTextSplitter;
 
   constructor() {
     dotenv.config();
-    const similarityThreshold = parseFloat(process.env.SIMILARITY_THRESHOLD || "0.5");
-
     this.embeddings = new TransformersEmbeddingGenerator();
-    this.vectorStore = RAGFactory.createVectorStore({
-      type: "chroma",
-      collectionName: "ai_base",
-      similarityThreshold,
+    this.textSplitter = new CharacterTextSplitter({
+      chunkSize: 1000,
+      chunkOverlap: 200,
     });
+
     this.documentLoader = new MarkdownLoader();
   }
 
+  private async initVectorStore(reset: boolean = false): Promise<void> {
+    try {
+      if (reset || !this.vectorStore) {
+        // Create a new collection
+        this.vectorStore = new Chroma(this.embeddings, {
+          collectionName: "ai_base",
+          url: "http://localhost:8000", // Default ChromaDB server URL
+        });
+      }
+    } catch (error) {
+      console.error("Error initializing vector store:", error);
+      throw error;
+    }
+  }
+
   async initialize(): Promise<void> {
-    await this.vectorStore.clear();
+    await this.initVectorStore(true);
+  }
+
+  private convertToLangChainDoc(doc: Document): LangChainDocument {
+    return new LangChainDocument({
+      pageContent: doc.content,
+      metadata: {
+        ...doc.metadata,
+        id: doc.id,
+      },
+    });
+  }
+
+  private convertFromLangChainDoc(doc: LangChainDocument, score?: number): SearchResult {
+    return {
+      document: {
+        id: doc.metadata?.id || "",
+        content: doc.pageContent,
+        metadata: { ...doc.metadata, id: undefined },
+      },
+      score: score || 0,
+    };
   }
 
   async addDocuments(documents: Document[]): Promise<void> {
     try {
-      for (const document of documents) {
-        const vector = await this.embeddings.generateEmbedding(document.content);
-        await this.vectorStore.add(document, vector);
-      }
+      await this.initVectorStore();
+      const langChainDocs = documents.map((doc) => this.convertToLangChainDoc(doc));
+      const splitDocs = await this.textSplitter.splitDocuments(langChainDocs);
+      await this.vectorStore.addDocuments(splitDocs);
     } catch (error) {
       console.error("Failed to add documents:", error);
       throw error;
@@ -53,9 +87,9 @@ export class RAGSystem {
 
   async findSimilarDocuments(query: string, limit: number = 5): Promise<SearchResult[]> {
     try {
-      const queryVector = await this.embeddings.generateEmbedding(query);
-      const results = await this.vectorStore.search(queryVector, limit);
-      return results;
+      await this.initVectorStore();
+      const results = await this.vectorStore.similaritySearchWithScore(query, limit);
+      return results.map(([doc, score]: [LangChainDocument, number]) => this.convertFromLangChainDoc(doc, score));
     } catch (error) {
       console.error("Failed to find similar documents:", error);
       throw error;
@@ -63,12 +97,12 @@ export class RAGSystem {
   }
 
   async clearDocuments(): Promise<void> {
-    await this.vectorStore.clear();
+    await this.initialize();
   }
 
   setSimilarityThreshold(threshold: number): void {
-    if (this.vectorStore.setSimilarityThreshold) {
-      this.vectorStore.setSimilarityThreshold(threshold);
-    }
+    // Note: LangChain's Chroma implementation doesn't directly support similarity threshold
+    // We'll need to filter results in the findSimilarDocuments method if needed
+    console.warn("setSimilarityThreshold is not supported in LangChain implementation");
   }
 }

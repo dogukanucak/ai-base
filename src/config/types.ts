@@ -8,33 +8,30 @@ export interface RAGConfig {
 
 export interface EmbeddingConfig {
   modelName: string;
-  // Add any other embedding-specific configuration
 }
 
 export interface VectorStoreConfig {
-  type: "chroma" | "faiss" | "simple"; // extensible to other vector stores
+  type: "chroma";
   collectionName?: string;
-  similarityThreshold: number;
-  // Add any other vector store-specific configuration
 }
 
 export interface DocumentLoaderConfig {
   type: "markdown";
   path: string;
-  enabled: boolean; // Whether to load documents or not
+  enabled: boolean;
 }
 
 export interface OpenAIConfig {
-  apiKey?: string;
   model: string;
   maxTokens: number;
   temperature: number;
-  enabled: boolean; // Whether to use OpenAI or not
+  enabled: boolean;
+  apiKey?: string;
 }
 
 export interface ConsoleConfig {
-  maxResponseLength: number; // Maximum length of response to display in console
-  showDebugInfo: boolean; // Whether to show debug information
-  truncateDocuments: boolean; // Whether to truncate document content in console
-  documentPreviewLength: number; // Length of document preview in console
+  maxResponseLength: number;
+  showDebugInfo: boolean;
+  truncateDocuments: boolean;
+  documentPreviewLength: number;
 }

@@ -32,7 +32,7 @@ export class ConfigLoader {
     const envConfig: Partial<RAGConfig> = {
       vectorStore: {
         ...this.config.vectorStore,
-        similarityThreshold: parseFloat(process.env.SIMILARITY_THRESHOLD || String(this.config.vectorStore.similarityThreshold)),
+        collectionName: process.env.COLLECTION_NAME || this.config.vectorStore.collectionName,
       },
       documentLoader: {
         ...this.config.documentLoader,

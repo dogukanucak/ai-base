@@ -1,9 +1,9 @@
-import { Express } from "express";
+import { FastifyInstance } from "fastify";
 import { RAGConfig } from "../../config/types";
 
 export interface Plugin {
   name: string;
-  register: (app: Express, config: RAGConfig) => Promise<void> | void;
+  register(app: FastifyInstance, config: RAGConfig): void | Promise<void>;
 }
 
 export interface QueryRequest {

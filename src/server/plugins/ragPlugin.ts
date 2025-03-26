@@ -1,13 +1,16 @@
-import { Express } from "express";
-import { Plugin, QueryRequest, QueryResponse } from "./types";
-import { RAGConfig } from "../../config/types";
+import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
 import { RAGSystem } from "../../rag";
+import { RAGConfig } from "../../config/types";
+import { QueryRequest } from "./types";
 import { OpenAIClient } from "../../ai/openAIClient";
 import { SimilarityService } from "../services/SimilarityService";
 import { ResponseFormatter } from "../services/ResponseFormatter";
+import { Plugin } from "./types";
+
+const DEFAULT_SIMILARITY_THRESHOLD = 0.7;
 
 export class RAGPlugin implements Plugin {
-  name = "rag";
+  readonly name = "rag";
   private similarityService: SimilarityService;
   private responseFormatter: ResponseFormatter;
   private openai: OpenAIClient | null = null;
@@ -18,7 +21,7 @@ export class RAGPlugin implements Plugin {
     this.responseFormatter = new ResponseFormatter();
   }
 
-  async register(app: Express, config: RAGConfig): Promise<void> {
+  async register(app: FastifyInstance, config: RAGConfig): Promise<void> {
     // Initialize OpenAI if enabled
     if (config.openAI.enabled && config.openAI.apiKey) {
       this.openai = new OpenAIClient({
@@ -30,22 +33,30 @@ export class RAGPlugin implements Plugin {
     }
 
     // Register document loading endpoint
-    app.post("/api/documents/load", async (req, res) => {
-      try {
-        const { path = "docs" } = req.body;
-        await this.similarityService.loadDocuments(path);
-        res.json({
-          success: true,
-          message: `Documents loaded successfully from ${path}`,
-        });
-      } catch (error) {
-        console.error("Error loading documents:", error);
-        res.status(500).json({
-          error: "Failed to load documents",
-          details: error instanceof Error ? error.message : "Unknown error",
-        });
+    app.post(
+      "/api/documents/load",
+      async (
+        request: FastifyRequest<{
+          Body: { path?: string };
+        }>,
+        reply: FastifyReply
+      ) => {
+        try {
+          const { path = "docs" } = request.body;
+          await this.similarityService.loadDocuments(path);
+          reply.send({
+            success: true,
+            message: `Documents loaded successfully from ${path}`,
+          });
+        } catch (error) {
+          console.error("Error loading documents:", error);
+          reply.status(500).send({
+            error: "Failed to load documents",
+            details: error instanceof Error ? error.message : "Unknown error",
+          });
+        }
       }
-    });
+    );
 
     // Load documents if enabled
     if (config.documentLoader.enabled) {
@@ -53,33 +64,41 @@ export class RAGPlugin implements Plugin {
     }
 
     // Register the query endpoint
-    app.post("/api/query", async (req, res) => {
-      try {
-        const { query, maxResults = 5 }: QueryRequest = req.body;
+    app.post(
+      "/api/query",
+      async (
+        request: FastifyRequest<{
+          Body: QueryRequest;
+        }>,
+        reply: FastifyReply
+      ) => {
+        try {
+          const { query, maxResults = 5 } = request.body;
 
-        if (!query) {
-          return res.status(400).json({
-            error: "Query is required",
+          if (!query) {
+            return reply.status(400).send({
+              error: "Query is required",
+            });
+          }
+
+          const searchResults = await this.similarityService.findRelevantDocuments(query, maxResults, DEFAULT_SIMILARITY_THRESHOLD);
+
+          let aiResponse: string | undefined;
+          if (this.openai) {
+            aiResponse = await this.openai.getResponse(query, searchResults);
+          }
+
+          const response = this.responseFormatter.format(query, searchResults, searchResults, config, aiResponse);
+
+          reply.send(response);
+        } catch (error) {
+          console.error("Error processing query:", error);
+          reply.status(500).send({
+            error: "Failed to process query",
+            details: error instanceof Error ? error.message : "Unknown error",
           });
         }
-
-        const searchResults = await this.similarityService.findRelevantDocuments(query, maxResults, config.vectorStore.similarityThreshold);
-
-        let aiResponse: string | undefined;
-        if (this.openai) {
-          aiResponse = await this.openai.getResponse(query, searchResults);
-        }
-
-        const response = this.responseFormatter.format(query, searchResults, searchResults, config, aiResponse);
-
-        res.json(response);
-      } catch (error) {
-        console.error("Error processing query:", error);
-        res.status(500).json({
-          error: "Internal server error",
-          details: error instanceof Error ? error.message : "Unknown error",
-        });
       }
-    });
+    );
   }
 }

@@ -1,18 +1,22 @@
-import { EmbeddingGenerator, VectorStore, DocumentLoader } from "../types";
+import { Embeddings } from "@langchain/core/embeddings";
+import { VectorStore } from "@langchain/core/vectorstores";
+import { DocumentLoader } from "../types";
 import { EmbeddingConfig, VectorStoreConfig, DocumentLoaderConfig } from "../config/types";
 import { TransformersEmbeddingGenerator } from "../embeddings/generator";
-import { ChromaVectorStore } from "../storage/chromaVectorStore";
+import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { MarkdownLoader } from "../documents/loader";
 
 export class RAGFactory {
-  static createEmbeddingGenerator(config: EmbeddingConfig): EmbeddingGenerator {
+  static createEmbeddingGenerator(config: EmbeddingConfig): Embeddings {
     return new TransformersEmbeddingGenerator(config.modelName);
   }
 
-  static createVectorStore(config: VectorStoreConfig): VectorStore {
+  static async createVectorStore(config: VectorStoreConfig): Promise<VectorStore> {
+    const embeddings = new TransformersEmbeddingGenerator();
+
     switch (config.type) {
       case "chroma":
-        return new ChromaVectorStore(config.collectionName || "custom_rag", config.similarityThreshold || 0.7);
+        return await Chroma.fromExistingCollection(embeddings, { collectionName: config.collectionName || "ai_base" });
       // Add other vector store types here
       default:
         throw new Error(`Unsupported vector store type: ${config.type}`);
