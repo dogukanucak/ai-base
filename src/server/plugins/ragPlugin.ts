@@ -3,14 +3,19 @@ import { Plugin, QueryRequest, QueryResponse } from "./types";
 import { RAGConfig } from "../../config/types";
 import { RAGSystem } from "../../rag";
 import { OpenAIClient } from "../../ai/openAIClient";
+import { SimilarityService } from "../services/SimilarityService";
+import { ResponseFormatter } from "../services/ResponseFormatter";
 
 export class RAGPlugin implements Plugin {
   name = "rag";
-  private rag: RAGSystem;
+  private similarityService: SimilarityService;
+  private responseFormatter: ResponseFormatter;
   private openai: OpenAIClient | null = null;
 
   constructor() {
-    this.rag = new RAGSystem();
+    const rag = new RAGSystem();
+    this.similarityService = new SimilarityService(rag);
+    this.responseFormatter = new ResponseFormatter();
   }
 
   async register(app: Express, config: RAGConfig): Promise<void> {
@@ -28,10 +33,7 @@ export class RAGPlugin implements Plugin {
     app.post("/api/documents/load", async (req, res) => {
       try {
         const { path = "docs" } = req.body;
-
-        // Load documents from the specified path
-        await this.rag.loadMarkdownDocuments(path);
-
+        await this.similarityService.loadDocuments(path);
         res.json({
           success: true,
           message: `Documents loaded successfully from ${path}`,
@@ -47,7 +49,7 @@ export class RAGPlugin implements Plugin {
 
     // Load documents if enabled
     if (config.documentLoader.enabled) {
-      await this.rag.loadMarkdownDocuments(config.documentLoader.path);
+      await this.similarityService.loadDocuments(config.documentLoader.path);
     }
 
     // Register the query endpoint
@@ -61,39 +63,14 @@ export class RAGPlugin implements Plugin {
           });
         }
 
-        // Search for relevant documents
-        const searchResults = await this.rag.findSimilarDocuments(query, maxResults);
+        const searchResults = await this.similarityService.findRelevantDocuments(query, maxResults, config.vectorStore.similarityThreshold);
 
-        // Filter out low similarity results
-        const relevantResults = searchResults.filter((result) => result.score >= config.vectorStore.similarityThreshold);
-
-        // Prepare response
-        const response: QueryResponse = {
-          query,
-          documents: relevantResults.map((result) => ({
-            content: config.console.truncateDocuments
-              ? result.document.content.substring(0, config.console.documentPreviewLength) + "..."
-              : result.document.content,
-            similarity: result.score,
-            id: result.document.id,
-            isRelevant: result.score >= config.vectorStore.similarityThreshold,
-          })),
-          metadata: {
-            totalResults: searchResults.length,
-            relevantResults: relevantResults.length,
-            similarityThreshold: config.vectorStore.similarityThreshold,
-            filteredOutResults: searchResults.length - relevantResults.length,
-          },
-        };
-
-        // Get AI response if enabled
+        let aiResponse: string | undefined;
         if (this.openai) {
-          const aiResponse = await this.openai.getResponse(query, relevantResults);
-          response.aiResponse =
-            config.console.maxResponseLength > 0
-              ? aiResponse.substring(0, config.console.maxResponseLength) + (aiResponse.length > config.console.maxResponseLength ? "..." : "")
-              : aiResponse;
+          aiResponse = await this.openai.getResponse(query, searchResults);
         }
+
+        const response = this.responseFormatter.format(query, searchResults, searchResults, config, aiResponse);
 
         res.json(response);
       } catch (error) {
