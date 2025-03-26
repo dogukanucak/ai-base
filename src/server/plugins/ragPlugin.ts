@@ -23,13 +23,24 @@ export class RAGPlugin implements Plugin {
 
   async register(app: FastifyInstance, config: RAGConfig): Promise<void> {
     // Initialize OpenAI if enabled
-    if (config.openAI.enabled && config.openAI.apiKey) {
-      this.openai = new OpenAIClient({
-        apiKey: config.openAI.apiKey,
-        model: config.openAI.model,
-        maxTokens: config.openAI.maxTokens,
-        temperature: config.openAI.temperature,
-      });
+    console.log("OpenAI config:", {
+      enabled: config.openAI.enabled,
+      hasApiKey: !!config.openAI.apiKey,
+      model: config.openAI.model,
+    });
+
+    if (config.openAI.enabled) {
+      if (!config.openAI.apiKey) {
+        console.warn("OpenAI is enabled but no API key provided. OpenAI features will be disabled.");
+      } else {
+        console.log("Initializing OpenAI client...");
+        this.openai = new OpenAIClient({
+          apiKey: config.openAI.apiKey,
+          model: config.openAI.model,
+          maxTokens: config.openAI.maxTokens,
+          temperature: config.openAI.temperature,
+        });
+      }
     }
 
     // Register document loading endpoint
@@ -84,8 +95,18 @@ export class RAGPlugin implements Plugin {
           const searchResults = await this.similarityService.findRelevantDocuments(query, maxResults, DEFAULT_SIMILARITY_THRESHOLD);
 
           let aiResponse: string | undefined;
+          console.log("OpenAI client status:", {
+            isInitialized: !!this.openai,
+            query,
+            resultsCount: searchResults.length,
+          });
+
           if (this.openai) {
+            console.log("Requesting OpenAI response...");
             aiResponse = await this.openai.getResponse(query, searchResults);
+            console.log("Received OpenAI response:", aiResponse ? "success" : "no response");
+          } else {
+            console.log("OpenAI client not initialized, skipping AI response");
           }
 
           const response = this.responseFormatter.format(query, searchResults, searchResults, config, aiResponse);

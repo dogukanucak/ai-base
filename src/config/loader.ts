@@ -28,8 +28,8 @@ export class ConfigLoader {
     }
   }
 
-  public loadFromEnv(): RAGConfig {
-    return {
+  public loadFromEnv(): void {
+    const envConfig: RAGConfig = {
       embedding: {
         modelName: process.env.EMBEDDING_MODEL || this.config.embedding.modelName,
       },
@@ -59,9 +59,10 @@ export class ConfigLoader {
       },
       openAI: {
         model: process.env.OPENAI_MODEL || this.config.openAI.model,
-        maxTokens: parseInt(process.env.MAX_TOKENS || String(this.config.openAI.maxTokens)),
-        temperature: parseFloat(process.env.TEMPERATURE || String(this.config.openAI.temperature)),
-        enabled: process.env.OPENAI_ENABLED === "true" || this.config.openAI.enabled,
+        maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS || String(this.config.openAI.maxTokens)),
+        temperature: parseFloat(process.env.OPENAI_TEMPERATURE || String(this.config.openAI.temperature)),
+        enabled: process.env.USE_OPENAI === "true" || this.config.openAI.enabled,
+        apiKey: process.env.OPENAI_API_KEY || this.config.openAI.apiKey,
       },
       console: {
         maxResponseLength: parseInt(process.env.MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength)),
@@ -70,6 +71,8 @@ export class ConfigLoader {
         documentPreviewLength: parseInt(process.env.DOCUMENT_PREVIEW_LENGTH || String(this.config.console.documentPreviewLength)),
       },
     };
+
+    this.mergeConfig(envConfig);
   }
 
   public updateConfig(partialConfig: Partial<RAGConfig>): void {
