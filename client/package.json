@@ -9,14 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "solid-js": "^1.8.15",
-    "@solidjs/router": "^0.13.1",
-    "sass": "^1.72.0"
+    "@solidjs/router": "^0.8.3",
+    "sass": "^1.86.0",
+    "solid-js": "^1.8.15"
   },
   "devDependencies": {
+    "@types/node": "^20.11.28",
     "typescript": "^5.4.2",
     "vite": "^5.1.6",
-    "vite-plugin-solid": "^2.10.1",
-    "@types/node": "^20.11.28"
+    "vite-plugin-solid": "^2.10.1"
   }
-} 
+}
