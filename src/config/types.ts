@@ -1,22 +1,33 @@
-export interface RAGConfig {
-  embedding: EmbeddingConfig;
-  vectorStore: VectorStoreConfig;
-  documentLoader: DocumentLoaderConfig;
-  openAI: OpenAIConfig;
-  console: ConsoleConfig;
-}
-
 export interface EmbeddingConfig {
   modelName: string;
+}
+
+export interface ChunkingConfig {
+  type: "character" | "markdown" | "recursive" | "token";
+  chunkSize: number;
+  chunkOverlap: number;
+  separators?: string[];
+  encodingName?: string;
+  tokenBudget?: number;
+}
+
+export interface RetrievalConfig {
+  type: "similarity" | "mmr" | "hybrid";
+  fetchK?: number;
+  lambda?: number;
+  scoreThreshold?: number;
+  useReranking?: boolean;
+  queryCount?: number;
 }
 
 export interface VectorStoreConfig {
   type: "chroma";
   collectionName?: string;
+  url?: string;
 }
 
 export interface DocumentLoaderConfig {
-  type: "markdown";
+  type: "markdown" | "pdf" | "docx" | "multi";
   path: string;
   enabled: boolean;
 }
@@ -34,4 +45,14 @@ export interface ConsoleConfig {
   showDebugInfo: boolean;
   truncateDocuments: boolean;
   documentPreviewLength: number;
+}
+
+export interface RAGConfig {
+  embedding: EmbeddingConfig;
+  chunking: ChunkingConfig;
+  retrieval: RetrievalConfig;
+  vectorStore: VectorStoreConfig;
+  documentLoader: DocumentLoaderConfig;
+  openAI: OpenAIConfig;
+  console: ConsoleConfig;
 }

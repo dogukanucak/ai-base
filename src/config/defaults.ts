@@ -4,9 +4,26 @@ export const defaultConfig: RAGConfig = {
   embedding: {
     modelName: "Xenova/all-MiniLM-L6-v2",
   },
+  chunking: {
+    type: "character",
+    chunkSize: 1000,
+    chunkOverlap: 200,
+    separators: ["\n\n", "\n", " ", ""],
+    encodingName: "cl100k_base",
+    tokenBudget: 4096,
+  },
+  retrieval: {
+    type: "similarity",
+    fetchK: 10,
+    lambda: 0.5,
+    scoreThreshold: 0.7,
+    useReranking: false,
+    queryCount: 3,
+  },
   vectorStore: {
     type: "chroma",
     collectionName: "ai_base",
+    url: "http://localhost:8000",
   },
   documentLoader: {
     type: "markdown",
