@@ -6,6 +6,7 @@ import { OpenAIClient } from "../../ai/openAIClient";
 import { SimilarityService } from "../services/SimilarityService";
 import { ResponseFormatter } from "../services/ResponseFormatter";
 import { Plugin } from "./types";
+import { Server } from "../Server";
 
 const DEFAULT_SIMILARITY_THRESHOLD = 0.7;
 
@@ -21,7 +22,7 @@ export class RAGPlugin implements Plugin {
     this.responseFormatter = new ResponseFormatter();
   }
 
-  async register(app: FastifyInstance, config: RAGConfig): Promise<void> {
+  async register(app: FastifyInstance, config: RAGConfig, server: Server): Promise<void> {
     // Initialize OpenAI if enabled
     if (config.openAI.enabled && config.openAI.apiKey) {
       this.openai = new OpenAIClient({

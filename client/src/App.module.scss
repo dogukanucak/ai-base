@@ -1,0 +1,42 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: var(--background);
+  color: var(--text);
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.link {
+  text-decoration: none;
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background: var(--surface-hover);
+  }
+
+  &.active {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+}
+
+.main {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+} 

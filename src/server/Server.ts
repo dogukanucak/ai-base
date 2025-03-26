@@ -4,6 +4,7 @@ import { Plugin } from "./plugins/types";
 import { ConfigLoader } from "../config/loader";
 import { RAGConfig } from "../config/types";
 import { RAGPlugin } from "./plugins/ragPlugin";
+import { BackofficePlugin } from "./plugins/backoffice/BackofficePlugin";
 
 export class Server {
   private app: FastifyInstance;
@@ -14,6 +15,7 @@ export class Server {
     this.app = fastify();
     this.config = config;
     this.plugins.push(new RAGPlugin());
+    this.plugins.push(new BackofficePlugin());
   }
 
   async start(port: number = 3000): Promise<void> {
@@ -23,7 +25,7 @@ export class Server {
       });
 
       for (const plugin of this.plugins) {
-        await plugin.register(this.app, this.config);
+        await plugin.register(this.app, this.config, this);
       }
 
       await this.app.listen({ port });

@@ -2,7 +2,7 @@ import { createSignal, For, Show } from 'solid-js';
 import { Message } from '../types/chat';
 import { chatService } from '../services/chatService';
 import { MessageContent } from './MessageContent';
-import '../styles/index.scss';
+import styles from './Chat.module.scss';
 
 export default function Chat() {
   const [messages, setMessages] = createSignal<Message[]>([]);
@@ -70,27 +70,12 @@ export default function Chat() {
   };
 
   return (
-    <div class="chat-container">
-      <div class="chat-messages">
+    <div class={styles.container}>
+      <div class={styles.messages}>
         <For each={messages()}>
           {(message) => (
-            <div
-              style={{
-                'text-align': message.isUser ? 'right' : 'left',
-                'margin-bottom': '1rem',
-              }}
-            >
-              <div
-                style={{
-                  'display': 'inline-block',
-                  'background-color': message.isUser ? 'var(--secondary-color)' : 'var(--primary-color)',
-                  'color': 'white',
-                  'padding': '0.5rem 1rem',
-                  'border-radius': '4px',
-                  'max-width': '70%',
-                  'white-space': 'pre-wrap',
-                }}
-              >
+            <div class={message.isUser ? styles.userMessage : styles.aiMessage}>
+              <div class={styles.messageContent}>
                 <MessageContent 
                   message={message} 
                   onStreamComplete={handleStreamComplete}
@@ -100,31 +85,27 @@ export default function Chat() {
           )}
         </For>
         <Show when={isTyping()}>
-          <div style={{ 'text-align': 'left', 'margin-bottom': '1rem' }}>
-            <div
-              style={{
-                'display': 'inline-block',
-                'background-color': 'var(--primary-color)',
-                'color': 'white',
-                'padding': '0.5rem 1rem',
-                'border-radius': '4px',
-                'font-style': 'italic',
-              }}
-            >
+          <div class={styles.aiMessage}>
+            <div class={styles.typingIndicator}>
               typing...
             </div>
           </div>
         </Show>
       </div>
-      <form class="chat-input" onSubmit={handleSubmit}>
+      <form class={styles.inputForm} onSubmit={handleSubmit}>
         <textarea
           value={inputValue()}
           onInput={(e) => setInputValue(e.currentTarget.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
           disabled={isLoading()}
+          class={styles.textarea}
         />
-        <button type="submit" disabled={isLoading() || !inputValue().trim()}>
+        <button 
+          type="submit" 
+          disabled={isLoading() || !inputValue().trim()}
+          class={styles.button}
+        >
           {isLoading() ? 'Sending...' : 'Send'}
         </button>
       </form>

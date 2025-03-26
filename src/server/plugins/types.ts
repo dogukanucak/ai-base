@@ -1,9 +1,10 @@
 import { FastifyInstance } from "fastify";
 import { RAGConfig } from "../../config/types";
+import { Server } from "../Server";
 
 export interface Plugin {
   name: string;
-  register(app: FastifyInstance, config: RAGConfig): void | Promise<void>;
+  register(app: FastifyInstance, config: RAGConfig, server: Server): void | Promise<void>;
 }
 
 export interface QueryRequest {
