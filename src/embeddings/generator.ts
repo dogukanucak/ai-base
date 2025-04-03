@@ -1,7 +1,15 @@
-import { pipeline, Pipeline } from "@xenova/transformers";
+import { pipeline } from "@huggingface/transformers";
 import { Embeddings } from "@langchain/core/embeddings";
 import { AsyncCaller } from "@langchain/core/utils/async_caller";
-import type { FeatureExtractionPipeline } from "@xenova/transformers";
+
+type FeatureExtractionOutput = {
+  data: Float32Array | number[];
+};
+
+type FeatureExtractionPipeline = (
+  text: string,
+  options: { pooling: string; normalize: boolean }
+) => Promise<FeatureExtractionOutput>;
 
 export class TransformersEmbeddingGenerator extends Embeddings {
   private model: FeatureExtractionPipeline | null = null;
