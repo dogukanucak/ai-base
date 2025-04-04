@@ -19,26 +19,26 @@
     "@fastify/cors": "^11.0.1",
     "@fastify/type-provider-typebox": "^5.1.0",
     "@huggingface/transformers": "^3.4.2",
-    "@langchain/community": "^0.3.37",
+    "@langchain/community": "^0.3.39",
     "@langchain/core": "^0.3.43",
-    "chromadb": "^2.0.1",
+    "chromadb": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.18.3",
+    "express": "^4.21.2",
     "faiss-node": "^0.5.1",
     "fastify": "^5.2.2",
     "front-matter": "^4.0.2",
     "glob": "^11.0.1",
-    "inversify": "^7.2.0",
+    "inversify": "^7.5.0",
     "langchain": "^0.3.19",
-    "openai": "^4.89.0",
+    "openai": "^4.91.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.11.24",
-    "tsx": "^4.7.1",
-    "typescript": "^5.3.3"
+    "@types/node": "^20.17.30",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
   }
 }

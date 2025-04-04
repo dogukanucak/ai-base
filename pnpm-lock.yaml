@@ -18,13 +18,13 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       '@langchain/community':
-        specifier: ^0.3.37
+        specifier: ^0.3.39
         version: 0.3.39(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/credential-provider-node@3.782.0)(@browserbasehq/sdk@2.5.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.91.1(ws@8.18.1)(zod@3.24.2))(zod@3.24.2))(@huggingface/transformers@3.4.2)(@ibm-cloud/watsonx-ai@1.6.4(@langchain/core@0.3.43(openai@4.91.1(ws@8.18.1)(zod@3.24.2))))(@langchain/core@0.3.43(openai@4.91.1(ws@8.18.1)(zod@3.24.2)))(@smithy/util-utf8@2.3.0)(axios@1.8.4)(chromadb@2.2.0(ws@8.18.1)(zod@3.24.2))(cohere-ai@7.16.0)(fast-xml-parser@4.4.1)(ibm-cloud-sdk-core@5.3.2)(jsonwebtoken@9.0.2)(openai@4.91.1(ws@8.18.1)(zod@3.24.2))(playwright@1.51.1)(ws@8.18.1)
       '@langchain/core':
         specifier: ^0.3.43
         version: 0.3.43(openai@4.91.1(ws@8.18.1)(zod@3.24.2))
       chromadb:
-        specifier: ^2.0.1
+        specifier: ^2.2.0
         version: 2.2.0(ws@8.18.1)(zod@3.24.2)
       cors:
         specifier: ^2.8.5
@@ -33,7 +33,7 @@ importers:
         specifier: ^16.4.7
         version: 16.4.7
       express:
-        specifier: ^4.18.3
+        specifier: ^4.21.2
         version: 4.21.2
       faiss-node:
         specifier: ^0.5.1
@@ -48,13 +48,13 @@ importers:
         specifier: ^11.0.1
         version: 11.0.1
       inversify:
-        specifier: ^7.2.0
+        specifier: ^7.5.0
         version: 7.5.0(reflect-metadata@0.2.2)
       langchain:
         specifier: ^0.3.19
         version: 0.3.19(@langchain/core@0.3.43(openai@4.91.1(ws@8.18.1)(zod@3.24.2)))(axios@1.8.4)(openai@4.91.1(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
       openai:
-        specifier: ^4.89.0
+        specifier: ^4.91.1
         version: 4.91.1(ws@8.18.1)(zod@3.24.2)
       reflect-metadata:
         specifier: ^0.2.2
@@ -67,13 +67,13 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       '@types/node':
-        specifier: ^20.11.24
+        specifier: ^20.17.30
         version: 20.17.30
       tsx:
-        specifier: ^4.7.1
+        specifier: ^4.19.3
         version: 4.19.3
       typescript:
-        specifier: ^5.3.3
+        specifier: ^5.8.2
         version: 5.8.2
 
 packages:
@@ -3990,7 +3990,7 @@ snapshots:
   axios@1.8.4(debug@4.4.0):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
-      form-data: 4.0.2
+      form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
