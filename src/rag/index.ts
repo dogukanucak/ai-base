@@ -6,7 +6,7 @@ import { TextSplitterFactory } from "../factory/textSplitterFactory";
 import { ConfigLoader } from "../config/loader";
 import dotenv from "dotenv";
 import { DocumentLoaderFactory } from "../factory/documentLoaderFactory";
-import { DocumentLoaderConfig, RAGConfig } from "../config/types";
+import { DocumentLoaderConfig } from "../config/types";
 import { DocumentLoader } from "../types";
 import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 
@@ -15,14 +15,13 @@ export class RAGSystem {
   private vectorStore!: Chroma;
   private documentLoader: BaseDocumentLoader;
   private configLoader: ConfigLoader;
-  private config: RAGConfig;
 
-  constructor(config: RAGConfig) {
+  constructor() {
     dotenv.config();
-    this.config = config;
+    this.configLoader = ConfigLoader.getInstance();
+    const config = this.configLoader.getConfig();
     this.embeddings = new TransformersEmbeddingGenerator();
     this.documentLoader = DocumentLoaderFactory.create(config.documentLoader);
-    this.configLoader = ConfigLoader.getInstance();
   }
 
   private async initVectorStore(reset: boolean = false): Promise<void> {
@@ -73,7 +72,7 @@ export class RAGSystem {
 
   async loadDocuments(path: string): Promise<LangChainDocument[]> {
     const loaderConfig: DocumentLoaderConfig = {
-      ...this.config.documentLoader,
+      ...this.configLoader.getConfig().documentLoader,
       path
     };
     this.documentLoader = DocumentLoaderFactory.create(loaderConfig);

@@ -2,18 +2,7 @@ import { RAGSystem } from "../src";
 import { RAGConfig } from "../src/config/types";
 
 async function example() {
-  // Create a RAG system with default configuration
-  const config: RAGConfig = {
-    embedding: { modelName: "Xenova/all-MiniLM-L6-v2" },
-    chunking: { type: "character", chunkSize: 1000, chunkOverlap: 200 },
-    retrieval: { type: "similarity", scoreThreshold: 0.5 },
-    vectorStore: { type: "chroma", collectionName: "ai_base" },
-    documentLoader: { type: "markdown", path: "docs", enabled: true },
-    openAI: { model: "gpt-3.5-turbo", maxTokens: 1000, temperature: 0.7, enabled: false },
-    console: { maxResponseLength: 1000, showDebugInfo: true, truncateDocuments: true, documentPreviewLength: 200 }
-  };
-
-  const rag = new RAGSystem(config);
+  const rag = new RAGSystem();
 
   // Clear existing documents
   await rag.clearDocuments();
