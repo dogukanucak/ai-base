@@ -1,20 +1,29 @@
 import { RAGSystem } from "../src";
-import { DocumentLoaderFactory } from "../src/factory/documentLoaderFactory";
+import { RAGConfig } from "../src/config/types";
 
 async function example() {
   // Create a RAG system with default configuration
-  const rag = new RAGSystem();
+  const config: RAGConfig = {
+    embedding: { modelName: "Xenova/all-MiniLM-L6-v2" },
+    chunking: { type: "character", chunkSize: 1000, chunkOverlap: 200 },
+    retrieval: { type: "similarity", scoreThreshold: 0.5 },
+    vectorStore: { type: "chroma", collectionName: "ai_base" },
+    documentLoader: { type: "markdown", path: "docs", enabled: true },
+    openAI: { model: "gpt-3.5-turbo", maxTokens: 1000, temperature: 0.7, enabled: false },
+    console: { maxResponseLength: 1000, showDebugInfo: true, truncateDocuments: true, documentPreviewLength: 200 }
+  };
+
+  const rag = new RAGSystem(config);
 
   // Clear existing documents
   await rag.clearDocuments();
 
   // Load documents
-  const loader = DocumentLoaderFactory.create({type: "markdown", path: "docs", enabled: true});
-  const documents = await loader.load();
+  const documents = await rag.loadDocuments("docs");
   console.log(`Found ${documents.length} documents`);
 
   // Add documents to RAG system
-  await rag.loadMarkdownDocuments("docs");
+  await rag.addDocuments(documents);
 
   const queries = ["where can I study to learn about Game development"];
 
@@ -30,10 +39,10 @@ async function example() {
     console.log(`\nFound ${results.length} matching documents:\n`);
     for (const result of results) {
       console.log(`Similarity: ${result.score.toFixed(4)}`);
-      console.log(`Document: ${result.document.id}\n`);
+      console.log(`Document: ${result.document.metadata?.filepath || "unknown"}\n`);
       console.log("Content:");
       console.log("--------");
-      console.log(result.document.content);
+      console.log(result.document.pageContent);
       console.log("--------\n");
     }
   }

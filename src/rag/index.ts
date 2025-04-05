@@ -2,21 +2,26 @@ import { Document as LangChainDocument } from "@langchain/core/documents";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { Document, SearchResult } from "../types";
 import { TransformersEmbeddingGenerator } from "../embeddings/generator";
-import { MarkdownLoader } from "../documents/loader";
 import { TextSplitterFactory } from "../factory/textSplitterFactory";
 import { ConfigLoader } from "../config/loader";
 import dotenv from "dotenv";
+import { DocumentLoaderFactory } from "../factory/documentLoaderFactory";
+import { DocumentLoaderConfig, RAGConfig } from "../config/types";
+import { DocumentLoader } from "../types";
+import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 
 export class RAGSystem {
   private embeddings: TransformersEmbeddingGenerator;
   private vectorStore!: Chroma;
-  private documentLoader: MarkdownLoader;
+  private documentLoader: BaseDocumentLoader;
   private configLoader: ConfigLoader;
+  private config: RAGConfig;
 
-  constructor() {
+  constructor(config: RAGConfig) {
     dotenv.config();
+    this.config = config;
     this.embeddings = new TransformersEmbeddingGenerator();
-    this.documentLoader = new MarkdownLoader();
+    this.documentLoader = DocumentLoaderFactory.create(config.documentLoader);
     this.configLoader = ConfigLoader.getInstance();
   }
 
@@ -73,16 +78,13 @@ export class RAGSystem {
     }
   }
 
-  async loadMarkdownDocuments(path?: string): Promise<void> {
-    try {
-      this.documentLoader = new MarkdownLoader(path);
-      const documents = await this.documentLoader.loadDocuments();
-      await this.clearDocuments(); // Clear existing documents before loading new ones
-      await this.addDocuments(documents);
-    } catch (error) {
-      console.error("Failed to load markdown documents:", error);
-      throw error;
-    }
+  async loadDocuments(path: string): Promise<LangChainDocument[]> {
+    const loaderConfig: DocumentLoaderConfig = {
+      ...this.config.documentLoader,
+      path
+    };
+    this.documentLoader = DocumentLoaderFactory.create(loaderConfig);
+    return await this.documentLoader.load();
   }
 
   async findSimilarDocuments(query: string, limit = 5): Promise<SearchResult[]> {

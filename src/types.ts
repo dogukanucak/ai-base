@@ -1,11 +1,9 @@
-export interface Document {
-  id: string;
-  content: string;
-  metadata?: Record<string, any>;
-}
+import { Document as LangChainDocument } from "@langchain/core/documents";
+
+export type Document = LangChainDocument;
 
 export interface SearchResult {
-  document: Document;
+  document: LangChainDocument;
   score: number;
 }
 
@@ -22,5 +20,5 @@ export interface SearchResult {
 // }
 
 export interface DocumentLoader {
-  loadDocuments(): Promise<Document[]>;
+  load(): Promise<LangChainDocument[]>;
 }
