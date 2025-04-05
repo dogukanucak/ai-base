@@ -2,7 +2,8 @@ import { glob } from "glob";
 import { readFile } from "fs/promises";
 import * as path from "path";
 import frontMatter from "front-matter";
-import { Document } from "../types";
+import { Document } from "@langchain/core/documents";
+import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 
 interface MarkdownAttributes {
   title?: string;
@@ -11,14 +12,15 @@ interface MarkdownAttributes {
   [key: string]: any;
 }
 
-export class MarkdownLoader {
+export class MarkdownLoader extends BaseDocumentLoader {
   private docsPath: string;
 
   constructor(docsPath: string = "docs") {
+    super();
     this.docsPath = path.resolve(docsPath);
   }
 
-  async loadDocuments(): Promise<Document[]> {
+  async load(): Promise<Document[]> {
     const mdFiles = await glob("*.md", {
       cwd: this.docsPath,
       absolute: true,
@@ -34,14 +36,15 @@ export class MarkdownLoader {
         const { attributes, body } = frontMatter<MarkdownAttributes>(content);
         const relativePath = path.relative(this.docsPath, file);
 
-        documents.push({
-          id: relativePath,
-          content: body.trim(),
-          metadata: {
-            ...attributes,
-            filepath: relativePath,
-          },
-        });
+        documents.push(
+          new Document({
+            pageContent: body.trim(),
+            metadata: {
+              ...attributes,
+              filepath: relativePath,
+            },
+          })
+        );
       } catch (error) {
         console.error("Error processing file:", file, error);
       }

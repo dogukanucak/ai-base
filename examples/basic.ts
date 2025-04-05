@@ -1,5 +1,5 @@
 import { RAGSystem } from "../src";
-import { MarkdownLoader } from "../src/documents/loader";
+import { DocumentLoaderFactory } from "../src/factory/documentLoaderFactory";
 
 async function example() {
   // Create a RAG system with default configuration
@@ -9,8 +9,8 @@ async function example() {
   await rag.clearDocuments();
 
   // Load documents
-  const loader = new MarkdownLoader("docs");
-  const documents = await loader.loadDocuments();
+  const loader = DocumentLoaderFactory.create({type: "markdown", path: "docs", enabled: true});
+  const documents = await loader.load();
   console.log(`Found ${documents.length} documents`);
 
   // Add documents to RAG system
