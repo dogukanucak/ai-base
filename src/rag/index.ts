@@ -45,21 +45,14 @@ export class RAGSystem {
 
   private convertToLangChainDoc(doc: Document): LangChainDocument {
     return new LangChainDocument({
-      pageContent: doc.content,
-      metadata: {
-        ...doc.metadata,
-        id: doc.id,
-      },
+      pageContent: doc.pageContent,
+      metadata: doc.metadata,
     });
   }
 
   private convertFromLangChainDoc(doc: LangChainDocument, score?: number): SearchResult {
     return {
-      document: {
-        id: doc.metadata?.id || "",
-        content: doc.pageContent,
-        metadata: { ...doc.metadata, id: undefined },
-      },
+      document: doc,
       score: score || 0,
     };
   }
@@ -107,7 +100,7 @@ export class RAGSystem {
       const seenContent = new Set<string>();
 
       for (const result of filteredResults) {
-        const content = result.document.content.trim();
+        const content = result.document.pageContent.trim();
         if (!seenContent.has(content)) {
           seenContent.add(content);
           uniqueResults.push(result);
