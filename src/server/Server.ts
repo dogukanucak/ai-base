@@ -1,8 +1,8 @@
 import fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import { Plugin } from "./plugins/types";
-import { ConfigLoader } from "../config/loader";
-import { RAGConfig } from "../config/types";
+import { ConfigLoader } from "@config/loader";
+import { RAGConfig } from "@config/types";
 import { RAGPlugin } from "./plugins/ragPlugin";
 import { BackofficePlugin } from "./plugins/backoffice/BackofficePlugin";
 

@@ -1,10 +1,9 @@
-import { Document } from "../types";
-import { SearchResult } from "../types";
-import { ConfigLoader } from "../config/loader";
+import { Document, SearchResult } from "@types";
+import { ConfigLoader } from "@config/loader";
 import { ChromaVectorStore } from "./services/ChromaVectorStore";
 import { DocumentProcessor } from "./services/DocumentProcessor";
 import { SearchService } from "./services/SearchService";
-import { DocumentLoaderFactory } from "../factory/documentLoaderFactory";
+import { DocumentLoaderFactory } from "@factory/documentLoaderFactory";
 import dotenv from "dotenv";
 
 export class RAGSystem {

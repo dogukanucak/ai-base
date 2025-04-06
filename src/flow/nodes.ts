@@ -1,7 +1,7 @@
 import { FlowNode } from "./base";
-import { RAGSystem } from "../rag";
-import { OpenAIClient } from "../ai/openAIClient";
-import { Document, SearchResult } from "../types";
+import { RAGSystem } from "@rag";
+import { OpenAIClient } from "@ai/openAIClient";
+import { Document, SearchResult } from "@types";
 
 // Document loading node
 export class DocumentLoadingNode extends FlowNode<any, any> {
