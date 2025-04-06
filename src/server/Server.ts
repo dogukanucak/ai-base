@@ -1,10 +1,10 @@
 import fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import { Plugin } from "./plugins/types";
-import { ConfigLoader } from "@config/loader";
-import { RAGConfig } from "@config/types";
-import { RAGPlugin } from "./plugins/ragPlugin";
-import { BackofficePlugin } from "./plugins/backoffice/BackofficePlugin";
+import { Plugin } from "@server/plugins/types";
+import { ConfigLoader } from "@core/config/loader";
+import { RAGConfig } from "@core/config/types";
+import { RAGPlugin } from "@server/plugins/ragPlugin";
+import { BackofficePlugin } from "@server/plugins/backoffice/BackofficePlugin";
 
 export class Server {
   private app: FastifyInstance;

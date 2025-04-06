@@ -2,8 +2,8 @@ import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { TextLoader } from "langchain/document_loaders/fs/text";
-import { DocumentLoaderConfig } from "../config/types";
-import { MarkdownLoader } from "../documents/loader";
+import { DocumentLoaderConfig } from "@core/config/types";
+import { MarkdownLoader } from "@core/documents/loader";
 import fs from "fs";
 import path from "path";
 

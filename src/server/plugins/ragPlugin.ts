@@ -1,12 +1,12 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { RAGSystem } from "@rag";
-import { RAGConfig } from "@config/types";
 import { QueryRequest } from "./types";
-import { OpenAIClient } from "@ai/openAIClient";
-import { SimilarityService } from "../services/SimilarityService";
-import { ResponseFormatter } from "../services/ResponseFormatter";
+import { RAGSystem } from "@core/rag";
+import { RAGConfig } from "@core/config/types";
+import { OpenAIClient } from "@core/ai/openAIClient";
+import { SimilarityService } from "@server/services/SimilarityService";
+import { ResponseFormatter } from "@server/services/ResponseFormatter";
 import { Plugin } from "./types";
-import { Server } from "../Server";
+import { Server } from "@server/Server";
 
 const DEFAULT_SIMILARITY_THRESHOLD = 0.7;
 

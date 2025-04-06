@@ -1,4 +1,4 @@
-import { Document, SearchResult } from "../types";
+import { Document, SearchResult } from "@core/types";
 
 // Base state that all flows will extend
 export interface BaseState {

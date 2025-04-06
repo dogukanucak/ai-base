@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { Plugin } from "../types";
-import { RAGConfig } from "../../../config/types";
-import { Server } from "../../Server";
+import { Plugin } from "@server/plugins/types";
+import { RAGConfig } from "@core/config/types";
+import { Server } from "@server/Server";
 import os from "os";
 
 export class BackofficePlugin implements Plugin {

@@ -1,13 +1,14 @@
 import { Document as LangChainDocument } from "@langchain/core/documents";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { Document, SearchResult } from "../types";
-import { TransformersEmbeddingGenerator } from "../embeddings/generator";
-import { TextSplitterFactory } from "../factory/textSplitterFactory";
-import { ConfigLoader } from "../config/loader";
+import { Document, SearchResult } from "@core/types";
+import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
+import { TextSplitterFactory } from "@core/factory/textSplitterFactory";
+import { ConfigLoader } from "@core/config/loader";
 import dotenv from "dotenv";
-import { DocumentLoaderFactory } from "../factory/documentLoaderFactory";
-import { DocumentLoaderConfig } from "../config/types";
+import { DocumentLoaderFactory } from "@core/factory/documentLoaderFactory";
+import { DocumentLoaderConfig } from "@core/config/types";
 import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
+import { RAGSystem } from "./RAGSystem";
 
 export class RAGSystem {
   private embeddings: TransformersEmbeddingGenerator;

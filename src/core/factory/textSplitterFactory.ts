@@ -1,5 +1,5 @@
 import { TextSplitter, CharacterTextSplitter, RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { ChunkingConfig } from "../config/types";
+import { ChunkingConfig } from "@core/config/types";
 
 export class TextSplitterFactory {
   static create(config: ChunkingConfig): TextSplitter {

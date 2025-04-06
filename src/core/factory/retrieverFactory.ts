@@ -1,6 +1,6 @@
 import { BaseRetriever } from "@langchain/core/retrievers";
 import { VectorStore } from "@langchain/core/vectorstores";
-import { RetrievalConfig } from "../config/types";
+import { RetrievalConfig } from "@core/config/types";
 
 export class RetrieverFactory {
   static async create(vectorStore: VectorStore, config: RetrievalConfig): Promise<BaseRetriever> {

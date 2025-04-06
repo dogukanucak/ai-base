@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio';
-import { FlowNode } from '../base';
-import { RAGSystem } from '@rag';
+import { FlowNode } from '@core/flow/base';
+import { RAGSystem } from '@core/rag';
 import { Document as LangChainDocument } from '@langchain/core/documents';
 
 export interface WebContentState {
