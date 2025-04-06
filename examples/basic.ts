@@ -1,40 +1,29 @@
-import { RAGSystem } from "../src";
+import { RAGSystem } from "../src/rag";
+import { FlowBuilder, RAGState } from "../src/flow";
+import { DocumentRetrievalNode } from "../src/flow/nodes";
 
 async function example() {
   const rag = new RAGSystem();
+  await rag.loadAndAddDocuments("docs");
 
-  // Clear existing documents
-  await rag.clearDocuments();
-  console.log("Cleared existing documents");
+  // Create a simple RAG flow without AI
+  const flow = new FlowBuilder<RAGState>()
+    .addNode("retrieve", new DocumentRetrievalNode(rag));
 
-  // Load and add documents in one step
-  const documentCount = await rag.loadAndAddDocuments("docs");
-  if (documentCount === 0) {
-    console.log("No documents were loaded. Exiting...");
-    return;
-  }
+  // Use the flow
+  const result = await flow.execute({
+    query: "What are the key components of artificial intelligence?",
+    documents: [],
+    searchResults: [],
+    aiResponse: undefined,
+  });
 
-  const queries = ["where can I study to learn about Game development"];
-
-  for (const query of queries) {
-    console.log(`\nQuery: ${query}`);
-    const results = await rag.findSimilarDocuments(query);
-
-    if (results.length === 0) {
-      console.log("No matching documents found.");
-      continue;
-    }
-
-    console.log(`\nFound ${results.length} matching documents:\n`);
-    for (const result of results) {
-      console.log(`Similarity: ${result.score.toFixed(4)}`);
-      console.log(`Document: ${result.document.metadata?.filepath || "unknown"}\n`);
-      console.log("Content:");
-      console.log("--------");
-      console.log(result.document.pageContent);
-      console.log("--------\n");
-    }
-  }
+  console.log("Query:", result.query);
+  console.log("Found Documents:", result.searchResults.length);
+  result.searchResults.forEach((doc, i) => {
+    console.log(`\nDocument ${i + 1} (Score: ${doc.score}):`);
+    console.log(doc.document.pageContent);
+  });
 }
 
-example().catch(console.error);
+example().catch(console.error); 
