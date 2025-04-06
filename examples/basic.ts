@@ -1,6 +1,6 @@
 import { RAGSystem } from "../src/rag";
 import { FlowBuilder, RAGState } from "../src/flow";
-import { DocumentRetrievalNode } from "../src/flow/nodes";
+import { DocumentLoadingNode, DocumentRetrievalNode, AIResponseNode } from "../src/flow/nodes";;
 
 async function example() {
   const rag = new RAGSystem();
@@ -8,6 +8,7 @@ async function example() {
 
   // Create a simple RAG flow without AI
   const flow = new FlowBuilder<RAGState>()
+    .addNode("load", new DocumentLoadingNode(rag, "docs"))
     .addNode("retrieve", new DocumentRetrievalNode(rag));
 
   // Use the flow

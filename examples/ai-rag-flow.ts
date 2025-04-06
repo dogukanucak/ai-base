@@ -1,7 +1,7 @@
 import { RAGSystem } from "../src/rag";
 import { OpenAIClient } from "../src/ai/openAIClient";
 import { FlowBuilder, RAGState } from "../src/flow";
-import { DocumentRetrievalNode, AIResponseNode } from "../src/flow/nodes";
+import { DocumentLoadingNode, DocumentRetrievalNode, AIResponseNode } from "../src/flow/nodes";
 import { ConfigLoader } from "../src/config/loader";
 
 async function example() {
@@ -17,10 +17,9 @@ async function example() {
     temperature: config.getConfig().openAI.temperature,
   });
 
-  await rag.loadAndAddDocuments("docs");
-
   // Create a RAG flow with AI
   const flow = new FlowBuilder<RAGState>()
+    .addNode("load", new DocumentLoadingNode(rag, "docs"))
     .addNode("retrieve", new DocumentRetrievalNode(rag))
     .addNode("generate", new AIResponseNode(openai));
 
