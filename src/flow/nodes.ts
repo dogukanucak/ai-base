@@ -9,10 +9,9 @@ export class DocumentLoadingNode extends FlowNode<any, any> {
     super();
   }
 
-  async process(state: any): Promise<{ documents: Document[] }> {
+  async process(state: any): Promise<{}> {
     await this.rag.loadAndAddDocuments(this.path);
-    // Return empty array since documents are stored in RAG system
-    return { documents: [] };
+    return {};
   }
 }
 

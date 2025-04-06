@@ -35,7 +35,7 @@
     "glob": "^11.0.1",
     "inversify": "^7.5.0",
     "langchain": "^0.3.19",
-    "openai": "^4.91.1",
+    "openai": "^4.91.1",   
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {

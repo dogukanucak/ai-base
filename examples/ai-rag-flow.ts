@@ -25,15 +25,14 @@ async function example() {
 
   // Use the flow
   const result = await flow.execute({
-    query: "What are the key components of artificial intelligence?",
-    documents: [],
+    query: "What are the key components of artificial intelligence?",  
     searchResults: [],
     aiResponse: undefined,
   });
 
   console.log("Query:", result.query);
   console.log("\nAI Response:", result.aiResponse);
-  console.log("\nBased on documents:", result.searchResults.length);
+  console.log("\nBased on documents:", result.searchResults?.length || 0);
 }
 
 example().catch(console.error); 

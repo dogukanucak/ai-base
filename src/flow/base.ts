@@ -7,8 +7,7 @@ export interface BaseState {
 
 // RAG specific state
 export interface RAGState extends BaseState {
-  documents: Document[];
-  searchResults: SearchResult[];
+  searchResults?: SearchResult[];
   aiResponse?: string;
 }
 
