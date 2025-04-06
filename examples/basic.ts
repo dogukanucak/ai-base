@@ -1,5 +1,4 @@
 import { RAGSystem } from "../src";
-import { RAGConfig } from "../src/config/types";
 
 async function example() {
   const rag = new RAGSystem();

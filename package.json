@@ -21,6 +21,7 @@
     "@huggingface/transformers": "^3.4.2",
     "@langchain/community": "^0.3.39",
     "@langchain/core": "^0.3.43",
+    "@langchain/openai": "^0.5.4",
     "chromadb": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

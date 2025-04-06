@@ -26,11 +26,10 @@ export class DocumentProcessor implements IDocumentProcessor {
     });
   }
 
-  convertFromLangChainDoc(doc: LangChainDocument, score?: number): Document {
+  convertFromLangChainDoc(doc: LangChainDocument): Document {
     return {
       pageContent: doc.pageContent,
       metadata: doc.metadata,
-      score: score || 0,
     };
   }
 }

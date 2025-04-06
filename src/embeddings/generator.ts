@@ -1,6 +1,5 @@
 import { pipeline } from "@huggingface/transformers";
 import { Embeddings } from "@langchain/core/embeddings";
-import { AsyncCaller } from "@langchain/core/utils/async_caller";
 
 type FeatureExtractionOutput = {
   data: Float32Array | number[];
