@@ -1,6 +1,5 @@
 import * as cheerio from 'cheerio';
 import { FlowNode } from '@core/flow/base';
-import { RAGSystem } from '@core/rag';
 import { Document as LangChainDocument } from '@langchain/core/documents';
 import { SearchResult } from '@core/types';
 import { TransformersEmbeddingGenerator } from '@core/embeddings/generator';
@@ -16,13 +15,11 @@ export interface WebSearchState {
 
 export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
   private embeddings: TransformersEmbeddingGenerator;
-  private vectorStore: MemoryVectorStore;
   private textSplitter: RecursiveCharacterTextSplitter;
 
   constructor() {
     super();
     this.embeddings = new TransformersEmbeddingGenerator();
-    this.vectorStore = new MemoryVectorStore(this.embeddings);
     this.textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 1000,
       chunkOverlap: 200,
@@ -35,11 +32,16 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
       return {};
     }
 
-    const documents: LangChainDocument[] = [];
+    const allSearchResults: SearchResult[] = [];
     
     for (const url of state.urls) {
       try {
         const response = await fetch(url);
+        if (!response.ok) {
+          console.error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+          continue;
+        }
+        
         const html = await response.text();
         const $ = cheerio.load(html);
         
@@ -47,8 +49,8 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
         const content = this.extractMainContent($);
         const chunks = await this.textSplitter.createDocuments([content]);
         
-        // Add metadata to each chunk
-        const chunkedDocs = chunks.map(chunk => new LangChainDocument({
+        // Create documents with metadata for this URL
+        const documents = chunks.map(chunk => new LangChainDocument({
           pageContent: chunk.pageContent,
           metadata: {
             source: url,
@@ -58,28 +60,39 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
             lastFetched: new Date().toISOString(),
           }
         }));
+
+        // Create a new vector store for this URL's content
+        const vectorStore = new MemoryVectorStore(this.embeddings);
+        await vectorStore.addDocuments(documents);
+
+        // Search within this URL's content
+        const results = await vectorStore.similaritySearchWithScore(state.query, 5);
         
-        documents.push(...chunkedDocs);
+        // Add results to all results with the correct source URL
+        allSearchResults.push(...results
+          .filter(([_, score]) => score > 0.5)
+          .map(([document, score]: [LangChainDocument, number]) => ({
+            document: new LangChainDocument({
+              pageContent: document.pageContent,
+              metadata: {
+                source: url,
+                title: document.metadata.title,
+                type: 'web',
+                domain: new URL(url).hostname,
+                lastFetched: new Date().toISOString(),
+              }
+            }),
+            score
+          })));
       } catch (error) {
-        console.error(`Failed to fetch content from ${url}:`, error);
+        console.error(`Failed to process ${url}:`, error);
       }
     }
 
-    // Add all documents to the in-memory vector store
-    await this.vectorStore.addDocuments(documents);
+    // Sort all results by score
+    allSearchResults.sort((a, b) => b.score - a.score);
 
-    // Perform similarity search with a higher k to get more results
-    const results = await this.vectorStore.similaritySearchWithScore(state.query, 10);
-    
-    // Convert to SearchResult format and filter by similarity threshold
-    const searchResults: SearchResult[] = results
-      .filter(([_, score]) => score > 0.5) // Only include results with significant similarity
-      .map(([document, score]: [LangChainDocument, number]) => ({
-        document,
-        score
-      }));
-
-    return { searchResults };
+    return { searchResults: allSearchResults };
   }
 
   private extractMainContent($: cheerio.CheerioAPI): string {

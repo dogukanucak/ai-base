@@ -38,4 +38,29 @@ export class AIResponseNode extends FlowNode<any, any> {
     const response = await this.openai.getResponse(state.query, state.searchResults);
     return { aiResponse: response };
   }
+}
+
+// Combine results node for web and document search
+export class CombineResultsNode extends FlowNode<any, any> {
+  constructor(private rag: RAGSystem) {
+    super();
+  }
+
+  async process(state: { query: string; searchResults?: SearchResult[] }): Promise<{ searchResults: SearchResult[] }> {
+    // Get web search results (already in state.searchResults)
+    const webResults = state.searchResults || [];
+
+    // Search in documents using RAG
+    const documentResults = await this.rag.findSimilarDocuments(state.query);
+
+    // Combine and sort all results by score
+    const allResults = [...webResults, ...documentResults].sort((a, b) => b.score - a.score);
+
+    // Remove duplicates based on content
+    const uniqueResults = allResults.filter((result, index, self) => 
+      index === self.findIndex((r) => r.document.pageContent === result.document.pageContent)
+    );
+
+    return { searchResults: uniqueResults };
+  }
 } 
