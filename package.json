@@ -12,7 +12,11 @@
     "type-check": "tsc --noEmit",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "chroma": "chroma run --path ./data/chroma --host localhost --port 8000"
+    "chroma": "chroma run --path ./data/chroma --host localhost --port 8000",
+    "university-agent": "tsx src/projects/UniversityAgent/examples/index.ts",
+    "format": "biome format --write .",
+    "lint": "biome lint .",
+    "check": "biome check --apply ."
   },
   "keywords": [],
   "author": "",
@@ -36,10 +40,10 @@
     "glob": "^11.0.1",
     "inversify": "^7.5.0",
     "langchain": "^0.3.19",
-    "openai": "^4.91.1",
-    "reflect-metadata": "^0.2.2"
+    "openai": "^4.91.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^20.17.30",

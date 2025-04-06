@@ -1,13 +1,13 @@
-import { Component, For, Show, createEffect, createMemo } from 'solid-js';
-import { backofficeStore } from '../store';
-import styles from './Backoffice.module.scss';
-import type { BackofficePlugin } from '../types';
+import { Component, For, Show, createEffect, createMemo } from "solid-js";
+import { backofficeStore } from "../store";
+import styles from "./Backoffice.module.scss";
+import type { BackofficePlugin } from "../types";
 
 export const Backoffice: Component = () => {
   const activePlugin = createMemo(() => {
     const activeId = backofficeStore.activePluginId();
     const plugin = activeId ? backofficeStore.getPlugin(activeId) : null;
-    console.log('Active plugin memo:', { activeId, plugin });
+    console.log("Active plugin memo:", { activeId, plugin });
     return plugin;
   });
 
@@ -28,13 +28,13 @@ export const Backoffice: Component = () => {
         </For>
       </aside>
       <main class={styles.content}>
-        <Show 
+        <Show
           when={activePlugin()}
           keyed
           fallback={<div class={styles.welcome}>Select a plugin to begin</div>}
         >
           {(plugin) => {
-            console.log('Rendering plugin content:', plugin.id);
+            console.log("Rendering plugin content:", plugin.id);
             const Content = plugin.content;
             return <Content />;
           }}
@@ -42,4 +42,4 @@ export const Backoffice: Component = () => {
       </main>
     </div>
   );
-}; 
+};

@@ -1,7 +1,7 @@
-import * as cheerio from 'cheerio';
-import { FlowNode } from '@core/flow/base';
-import { RAGSystem } from '@core/rag';
-import { Document as LangChainDocument } from '@langchain/core/documents';
+import * as cheerio from "cheerio";
+import { FlowNode } from "@core/flow/base";
+import { RAGSystem } from "@core/rag";
+import { Document as LangChainDocument } from "@langchain/core/documents";
 
 export interface WebContentState {
   query: string;
@@ -21,26 +21,26 @@ export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentSt
     }
 
     const documents: LangChainDocument[] = [];
-    
+
     for (const url of state.urls) {
       try {
         const response = await fetch(url);
         const html = await response.text();
         const $ = cheerio.load(html);
-        
+
         const content = this.extractMainContent($);
-        
+
         documents.push(
           new LangChainDocument({
             pageContent: content,
             metadata: {
               source: url,
               title: this.extractTitle($),
-              type: 'web',
+              type: "web",
               domain: new URL(url).hostname,
               lastFetched: new Date().toISOString(),
-            }
-          })
+            },
+          }),
         );
       } catch (error) {
         console.error(`Failed to fetch content from ${url}:`, error);
@@ -52,17 +52,17 @@ export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentSt
   }
 
   private extractMainContent($: cheerio.CheerioAPI): string {
-    $('script, style, nav, footer, header').remove();
-    
+    $("script, style, nav, footer, header").remove();
+
     const selectors = [
-      'article',
-      'main',
-      '.article',
-      '.post',
-      '.content',
-      '#content',
-      '#main',
-      'body'
+      "article",
+      "main",
+      ".article",
+      ".post",
+      ".content",
+      "#content",
+      "#main",
+      "body",
     ];
 
     for (const selector of selectors) {
@@ -72,16 +72,17 @@ export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentSt
       }
     }
 
-    return $('body').text().trim();
+    return $("body").text().trim();
   }
 
   private extractTitle($: cheerio.CheerioAPI): string {
-    const title = $('meta[property="og:title"]').attr('content') ||
-                 $('meta[name="twitter:title"]').attr('content') ||
-                 $('title').text() ||
-                 $('h1').first().text() ||
-                 'Untitled Web Content';
-    
+    const title =
+      $('meta[property="og:title"]').attr("content") ||
+      $('meta[name="twitter:title"]').attr("content") ||
+      $("title").text() ||
+      $("h1").first().text() ||
+      "Untitled Web Content";
+
     return title.trim();
   }
-} 
+}

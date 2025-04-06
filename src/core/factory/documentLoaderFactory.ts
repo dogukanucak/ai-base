@@ -10,7 +10,7 @@ import path from "path";
 export class DocumentLoaderFactory {
   static create(config: DocumentLoaderConfig): BaseDocumentLoader {
     const { path: docsPath } = config;
-    
+
     // Resolve path relative to project root
     const projectRoot = process.cwd();
     const absolutePath = path.resolve(projectRoot, docsPath);
@@ -26,10 +26,14 @@ export class DocumentLoaderFactory {
       throw new Error(`Path is not a directory: ${absolutePath}`);
     }
 
-    return new DirectoryLoader(absolutePath, {
-      ".txt": (path) => new TextLoader(path),
-      ".md": (path) => new MarkdownLoader(path),
-      ".pdf": (path) => new PDFLoader(path),
-    }, true);
+    return new DirectoryLoader(
+      absolutePath,
+      {
+        ".txt": (path) => new TextLoader(path),
+        ".md": (path) => new MarkdownLoader(path),
+        ".pdf": (path) => new PDFLoader(path),
+      },
+      true,
+    );
   }
 }

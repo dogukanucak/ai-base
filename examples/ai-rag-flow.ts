@@ -8,7 +8,7 @@ async function example() {
   // Initialize components
   const config = ConfigLoader.getInstance();
   config.loadFromEnv();
-  
+
   const rag = new RAGSystem();
   const openai = new OpenAIClient({
     apiKey: process.env.OPENAI_API_KEY || "",
@@ -25,7 +25,7 @@ async function example() {
 
   // Use the flow
   const result = await flow.execute({
-    query: "What are the key components of artificial intelligence?",  
+    query: "What are the key components of artificial intelligence?",
     searchResults: [],
     aiResponse: undefined,
   });
@@ -35,4 +35,4 @@ async function example() {
   console.log("\nBased on documents:", result.searchResults?.length || 0);
 }
 
-example().catch(console.error); 
+example().catch(console.error);

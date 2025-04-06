@@ -7,7 +7,7 @@ type FeatureExtractionOutput = {
 
 type FeatureExtractionPipeline = (
   text: string,
-  options: { pooling: string; normalize: boolean }
+  options: { pooling: string; normalize: boolean },
 ) => Promise<FeatureExtractionOutput>;
 
 export class TransformersEmbeddingGenerator extends Embeddings {
@@ -21,7 +21,10 @@ export class TransformersEmbeddingGenerator extends Embeddings {
 
   private async initModel(): Promise<FeatureExtractionPipeline> {
     if (!this.model) {
-      this.model = (await pipeline("feature-extraction", this.modelName)) as FeatureExtractionPipeline;
+      this.model = (await pipeline(
+        "feature-extraction",
+        this.modelName,
+      )) as FeatureExtractionPipeline;
     }
     return this.model;
   }
@@ -32,7 +35,7 @@ export class TransformersEmbeddingGenerator extends Embeddings {
       texts.map(async (text) => {
         const output = await model(text, { pooling: "mean", normalize: true });
         return Array.from(output.data);
-      })
+      }),
     );
     return embeddings;
   }

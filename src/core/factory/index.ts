@@ -16,7 +16,9 @@ export class RAGFactory {
 
     switch (config.type) {
       case "chroma":
-        return await Chroma.fromExistingCollection(embeddings, { collectionName: config.collectionName || "ai_base" });
+        return await Chroma.fromExistingCollection(embeddings, {
+          collectionName: config.collectionName || "ai_base",
+        });
       // Add other vector store types here
       default:
         throw new Error(`Unsupported vector store type: ${config.type}`);

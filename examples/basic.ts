@@ -5,7 +5,7 @@ import { WebSearchNode, WebSearchState } from "@core/flow/web-flows";
 
 async function example() {
   const rag = new RAGSystem();
-  
+
   // Create a RAG flow with both document and web content search
   const flow = new FlowBuilder<WebSearchState>()
     .addNode("load-docs", new DocumentLoadingNode(rag, "docs"))
@@ -15,11 +15,9 @@ async function example() {
   // Use the flow to search for content in documents and web pages
   const result = await flow.execute({
     query: "Culinary Arts",
-    urls: [
-      "https://culinary.ieu.edu.tr/en/hakkimizda",
-    ],
+    urls: ["https://culinary.ieu.edu.tr/en/hakkimizda"],
     searchResults: undefined,
-    aiResponse: undefined
+    aiResponse: undefined,
   });
 
   console.log("Query:", result.query);
@@ -32,4 +30,4 @@ async function example() {
   });
 }
 
-example().catch(console.error); 
+example().catch(console.error);

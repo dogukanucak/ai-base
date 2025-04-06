@@ -6,7 +6,10 @@ import { SearchResult } from "@core/types";
 
 // Document loading node
 export class DocumentLoadingNode extends FlowNode<any, any> {
-  constructor(private rag: RAGSystem, private path: string) {
+  constructor(
+    private rag: RAGSystem,
+    private path: string,
+  ) {
     super();
   }
 
@@ -35,7 +38,9 @@ export class AIResponseNode extends FlowNode<any, any> {
     super();
   }
 
-  async process(state: { query: string; searchResults: SearchResult[] }): Promise<{ aiResponse: string }> {
+  async process(state: { query: string; searchResults: SearchResult[] }): Promise<{
+    aiResponse: string;
+  }> {
     const response = await this.openai.getResponse(state.query, state.searchResults);
     return { aiResponse: response };
   }
@@ -47,7 +52,9 @@ export class CombineResultsNode extends FlowNode<any, any> {
     super();
   }
 
-  async process(state: { query: string; searchResults?: SearchResult[] }): Promise<{ searchResults: SearchResult[] }> {
+  async process(state: { query: string; searchResults?: SearchResult[] }): Promise<{
+    searchResults: SearchResult[];
+  }> {
     // Get web search results (already in state.searchResults)
     const webResults = state.searchResults || [];
 
@@ -58,10 +65,11 @@ export class CombineResultsNode extends FlowNode<any, any> {
     const allResults = [...webResults, ...documentResults].sort((a, b) => b.score - a.score);
 
     // Remove duplicates based on content
-    const uniqueResults = allResults.filter((result, index, self) => 
-      index === self.findIndex((r) => r.document.pageContent === result.document.pageContent)
+    const uniqueResults = allResults.filter(
+      (result, index, self) =>
+        index === self.findIndex((r) => r.document.pageContent === result.document.pageContent),
     );
 
     return { searchResults: uniqueResults };
   }
-} 
+}

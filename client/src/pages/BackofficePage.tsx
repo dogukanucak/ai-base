@@ -1,7 +1,7 @@
-import { Component } from 'solid-js';
-import { Backoffice } from '../plugins/backoffice/components/Backoffice';
-import { useBackofficeInit } from '../plugins/backoffice/hooks/useBackofficeInit';
-import styles from './BackofficePage.module.scss';
+import { Component } from "solid-js";
+import { Backoffice } from "../plugins/backoffice/components/Backoffice";
+import { useBackofficeInit } from "../plugins/backoffice/hooks/useBackofficeInit";
+import styles from "./BackofficePage.module.scss";
 
 const BackofficePage: Component = () => {
   useBackofficeInit();
@@ -13,4 +13,4 @@ const BackofficePage: Component = () => {
   );
 };
 
-export default BackofficePage; 
+export default BackofficePage;

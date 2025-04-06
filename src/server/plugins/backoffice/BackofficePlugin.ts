@@ -48,7 +48,10 @@ export class BackofficePlugin implements Plugin {
     // Environment variables endpoints
     app.get("/api/env/variables", async () => {
       const variables = Object.entries(config).map(([key, value]) => {
-        const isSecret = key.toLowerCase().includes("key") || key.toLowerCase().includes("secret") || key.toLowerCase().includes("password");
+        const isSecret =
+          key.toLowerCase().includes("key") ||
+          key.toLowerCase().includes("secret") ||
+          key.toLowerCase().includes("password");
         return {
           key,
           value: isSecret ? "••••••••" : value,

@@ -25,7 +25,7 @@ export class MarkdownLoader extends BaseDocumentLoader {
     // Check if path is a file or directory
     const stats = fs.statSync(this.docsPath);
     const isFile = stats.isFile();
-    
+
     let mdFiles: string[];
     if (isFile) {
       // If it's a file, just use that file
@@ -55,7 +55,7 @@ export class MarkdownLoader extends BaseDocumentLoader {
               ...attributes,
               filepath: relativePath,
             },
-          })
+          }),
         );
       } catch (error) {
         console.error("Error processing file:", file, error);

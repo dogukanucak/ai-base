@@ -14,7 +14,11 @@ export class SimilarityService {
     this.rag = rag;
   }
 
-  async findRelevantDocuments(query: string, maxResults: number, similarityThreshold: number): Promise<SearchResult[]> {
+  async findRelevantDocuments(
+    query: string,
+    maxResults: number,
+    similarityThreshold: number,
+  ): Promise<SearchResult[]> {
     const searchResults = await this.rag.findSimilarDocuments(query, maxResults);
     return searchResults.filter((result: SearchResult) => result.score >= similarityThreshold);
   }

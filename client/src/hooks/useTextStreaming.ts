@@ -5,7 +5,11 @@ interface TextStreamingHook {
   startStreaming: () => void;
 }
 
-export function useTextStreaming(fullText: string, onComplete: () => void, delay: number = 20): TextStreamingHook {
+export function useTextStreaming(
+  fullText: string,
+  onComplete: () => void,
+  delay: number = 20,
+): TextStreamingHook {
   const [streamedText, setStreamedText] = createSignal("");
 
   const startStreaming = () => {

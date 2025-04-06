@@ -23,6 +23,7 @@
       "@core/types": ["./src/core/types"],
       "@core/types/*": ["./src/core/types/*"],
       "@core/config/*": ["./src/core/config/*"],
+      "@core/tools/*": ["./src/core/tools/*"],
       "@projects/*": ["./src/projects/*"],
       "@server/*": ["./src/server/*"]
     },
@@ -31,4 +32,4 @@
   },
   "include": ["src/**/*", "examples/**/*"],
   "exclude": ["node_modules", "dist"]
-} 
+}

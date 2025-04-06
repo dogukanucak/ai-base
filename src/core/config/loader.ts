@@ -35,41 +35,61 @@ export class ConfigLoader {
         modelName: process.env.EMBEDDING_MODEL || this.config.embedding.modelName,
       },
       chunking: {
-        type: (process.env.CHUNKING_TYPE as RAGConfig["chunking"]["type"]) || this.config.chunking.type,
+        type:
+          (process.env.CHUNKING_TYPE as RAGConfig["chunking"]["type"]) || this.config.chunking.type,
         chunkSize: parseInt(process.env.CHUNK_SIZE || String(this.config.chunking.chunkSize)),
-        chunkOverlap: parseInt(process.env.CHUNK_OVERLAP || String(this.config.chunking.chunkOverlap)),
-        separators: process.env.CHUNK_SEPARATORS ? process.env.CHUNK_SEPARATORS.split(",") : this.config.chunking.separators,
+        chunkOverlap: parseInt(
+          process.env.CHUNK_OVERLAP || String(this.config.chunking.chunkOverlap),
+        ),
+        separators: process.env.CHUNK_SEPARATORS
+          ? process.env.CHUNK_SEPARATORS.split(",")
+          : this.config.chunking.separators,
       },
       retrieval: {
-        type: (process.env.RETRIEVAL_TYPE as RAGConfig["retrieval"]["type"]) || this.config.retrieval.type,
+        type:
+          (process.env.RETRIEVAL_TYPE as RAGConfig["retrieval"]["type"]) ||
+          this.config.retrieval.type,
         fetchK: parseInt(process.env.FETCH_K || String(this.config.retrieval.fetchK)),
         lambda: parseFloat(process.env.LAMBDA || String(this.config.retrieval.lambda)),
-        scoreThreshold: parseFloat(process.env.SCORE_THRESHOLD || String(this.config.retrieval.scoreThreshold)),
+        scoreThreshold: parseFloat(
+          process.env.SCORE_THRESHOLD || String(this.config.retrieval.scoreThreshold),
+        ),
         useReranking: process.env.USE_RERANKING === "true" || this.config.retrieval.useReranking,
         queryCount: parseInt(process.env.QUERY_COUNT || String(this.config.retrieval.queryCount)),
       },
       vectorStore: {
-        type: (process.env.VECTOR_STORE_TYPE as RAGConfig["vectorStore"]["type"]) || this.config.vectorStore.type,
+        type:
+          (process.env.VECTOR_STORE_TYPE as RAGConfig["vectorStore"]["type"]) ||
+          this.config.vectorStore.type,
         collectionName: process.env.COLLECTION_NAME || this.config.vectorStore.collectionName,
         url: process.env.VECTOR_STORE_URL || this.config.vectorStore.url,
       },
       documentLoader: {
         type: "markdown" as const,
-        path: process.env.DOCUMENTS_PATH ? path.resolve(process.cwd(), process.env.DOCUMENTS_PATH) : this.config.documentLoader.path,
+        path: process.env.DOCUMENTS_PATH
+          ? path.resolve(process.cwd(), process.env.DOCUMENTS_PATH)
+          : this.config.documentLoader.path,
         enabled: process.env.LOAD_DOCUMENTS === "true" || this.config.documentLoader.enabled,
       },
       openAI: {
         model: process.env.OPENAI_MODEL || this.config.openAI.model,
         maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS || String(this.config.openAI.maxTokens)),
-        temperature: parseFloat(process.env.OPENAI_TEMPERATURE || String(this.config.openAI.temperature)),
+        temperature: parseFloat(
+          process.env.OPENAI_TEMPERATURE || String(this.config.openAI.temperature),
+        ),
         enabled: process.env.USE_OPENAI === "true" || this.config.openAI.enabled,
         apiKey: process.env.OPENAI_API_KEY || this.config.openAI.apiKey,
       },
       console: {
-        maxResponseLength: parseInt(process.env.MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength)),
+        maxResponseLength: parseInt(
+          process.env.MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength),
+        ),
         showDebugInfo: process.env.SHOW_DEBUG_INFO === "true" || this.config.console.showDebugInfo,
-        truncateDocuments: process.env.TRUNCATE_DOCUMENTS === "true" || this.config.console.truncateDocuments,
-        documentPreviewLength: parseInt(process.env.DOCUMENT_PREVIEW_LENGTH || String(this.config.console.documentPreviewLength)),
+        truncateDocuments:
+          process.env.TRUNCATE_DOCUMENTS === "true" || this.config.console.truncateDocuments,
+        documentPreviewLength: parseInt(
+          process.env.DOCUMENT_PREVIEW_LENGTH || String(this.config.console.documentPreviewLength),
+        ),
       },
     };
 

@@ -27,7 +27,7 @@ export class FlowBuilder<TState> {
 
   async execute(state: TState): Promise<TState> {
     let currentState = { ...state };
-    
+
     for (const { node } of this.nodes) {
       const result = await node.process(currentState);
       currentState = { ...currentState, ...result };
@@ -35,4 +35,4 @@ export class FlowBuilder<TState> {
 
     return currentState;
   }
-} 
+}

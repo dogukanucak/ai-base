@@ -26,7 +26,8 @@ class ChatService {
     if (data.aiResponse) {
       const relevantDocs = data.documents.filter((doc) => doc.isRelevant).map((doc) => doc.id);
 
-      const docReference = relevantDocs.length > 0 ? `\n\nReferenced documents: ${relevantDocs.join(", ")}` : "";
+      const docReference =
+        relevantDocs.length > 0 ? `\n\nReferenced documents: ${relevantDocs.join(", ")}` : "";
 
       return data.aiResponse + docReference;
     }

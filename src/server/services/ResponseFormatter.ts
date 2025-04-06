@@ -11,21 +11,21 @@ export class ResponseFormatter {
 
   formatResponse(query: string, relevantResults: SearchResult[]): QueryResponse {
     const scoreThreshold = this.config.retrieval?.scoreThreshold ?? 0.7;
-    
+
     return {
       query,
       documents: relevantResults.map((result) => ({
         content: result.document.pageContent,
         similarity: result.score,
         id: result.document.metadata?.id || "",
-        isRelevant: result.score >= scoreThreshold
+        isRelevant: result.score >= scoreThreshold,
       })),
       metadata: {
         totalResults: relevantResults.length,
         relevantResults: relevantResults.length,
         similarityThreshold: scoreThreshold,
-        filteredOutResults: 0
-      }
+        filteredOutResults: 0,
+      },
     };
   }
 }

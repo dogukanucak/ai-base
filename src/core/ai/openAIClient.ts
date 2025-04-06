@@ -32,7 +32,7 @@ export class OpenAIClient {
   async getResponse(query: string, context?: SearchResult[]): Promise<string> {
     const messages = [
       new SystemMessage(
-        "You are a helpful assistant. When answering questions, use the provided context information if available, but you can also draw on your general knowledge when needed. Always aim to provide accurate and relevant information."
+        "You are a helpful assistant. When answering questions, use the provided context information if available, but you can also draw on your general knowledge when needed. Always aim to provide accurate and relevant information.",
       ),
     ];
 
@@ -45,8 +45,8 @@ export class OpenAIClient {
 ${contextText}
 ---
 Given the context above, please answer the following question:
-${query}`
-        )
+${query}`,
+        ),
       );
     } else {
       messages.push(new HumanMessage(query));

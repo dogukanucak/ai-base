@@ -45,7 +45,7 @@ export class RAGPlugin implements Plugin {
         request: FastifyRequest<{
           Body: { path?: string };
         }>,
-        reply: FastifyReply
+        reply: FastifyReply,
       ) => {
         try {
           const { path = "docs" } = request.body;
@@ -61,7 +61,7 @@ export class RAGPlugin implements Plugin {
             details: error instanceof Error ? error.message : "Unknown error",
           });
         }
-      }
+      },
     );
 
     // Load documents if enabled
@@ -76,7 +76,7 @@ export class RAGPlugin implements Plugin {
         request: FastifyRequest<{
           Body: QueryRequest;
         }>,
-        reply: FastifyReply
+        reply: FastifyReply,
       ) => {
         try {
           const { query, maxResults = 5 } = request.body;
@@ -87,7 +87,11 @@ export class RAGPlugin implements Plugin {
             });
           }
 
-          const searchResults = await this.similarityService.findRelevantDocuments(query, maxResults, DEFAULT_SIMILARITY_THRESHOLD);
+          const searchResults = await this.similarityService.findRelevantDocuments(
+            query,
+            maxResults,
+            DEFAULT_SIMILARITY_THRESHOLD,
+          );
 
           let aiResponse: string | undefined;
           if (this.openai) {
@@ -103,16 +107,19 @@ export class RAGPlugin implements Plugin {
             details: error instanceof Error ? error.message : "Unknown error",
           });
         }
-      }
+      },
     );
   }
 
-  async handleQuery(request: FastifyRequest<{ Body: QueryRequest }>, reply: FastifyReply): Promise<void> {
+  async handleQuery(
+    request: FastifyRequest<{ Body: QueryRequest }>,
+    reply: FastifyReply,
+  ): Promise<void> {
     const { query } = request.body;
     const searchResults = await this.similarityService.findRelevantDocuments(
       query,
       this.config.retrieval.fetchK || 5,
-      this.config.retrieval.scoreThreshold || 0.7
+      this.config.retrieval.scoreThreshold || 0.7,
     );
     const aiResponse = await this.openAIClient.getResponse(query, searchResults);
     const response = this.responseFormatter.formatResponse(query, searchResults);

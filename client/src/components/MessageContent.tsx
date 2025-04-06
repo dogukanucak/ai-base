@@ -1,6 +1,6 @@
-import { createSignal } from 'solid-js';
-import { Message } from '../types/chat';
-import { useTextStreaming } from '../hooks/useTextStreaming';
+import { createSignal } from "solid-js";
+import { Message } from "../types/chat";
+import { useTextStreaming } from "../hooks/useTextStreaming";
 
 interface MessageContentProps {
   message: Message;
@@ -9,14 +9,11 @@ interface MessageContentProps {
 
 export function MessageContent(props: MessageContentProps) {
   const [isComplete, setIsComplete] = createSignal(!props.message.isStreaming);
-  
-  const { streamedText, startStreaming } = useTextStreaming(
-    props.message.text,
-    () => {
-      setIsComplete(true);
-      props.onStreamComplete(props.message.id);
-    }
-  );
+
+  const { streamedText, startStreaming } = useTextStreaming(props.message.text, () => {
+    setIsComplete(true);
+    props.onStreamComplete(props.message.id);
+  });
 
   if (props.message.isStreaming && !isComplete()) {
     startStreaming();
@@ -24,4 +21,4 @@ export function MessageContent(props: MessageContentProps) {
   }
 
   return <>{props.message.text}</>;
-} 
+}
