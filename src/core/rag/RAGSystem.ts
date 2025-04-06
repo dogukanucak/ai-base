@@ -1,9 +1,9 @@
-import { Document, SearchResult } from "@types";
-import { ConfigLoader } from "@config/loader";
+import { Document, SearchResult } from "@core/types";
+import { ConfigLoader } from "@core/config/loader";
 import { ChromaVectorStore } from "./services/ChromaVectorStore";
 import { DocumentProcessor } from "./services/DocumentProcessor";
 import { SearchService } from "./services/SearchService";
-import { DocumentLoaderFactory } from "@factory/documentLoaderFactory";
+import { DocumentLoaderFactory } from "@core/factory/documentLoaderFactory";
 import dotenv from "dotenv";
 
 export class RAGSystem {
@@ -38,7 +38,7 @@ export class RAGSystem {
     };
     const documentLoader = DocumentLoaderFactory.create(config);
     const docs = await documentLoader.load();
-    return docs.map((doc) => this.documentProcessor.convertFromLangChainDoc(doc));
+    return docs.map((doc: Document) => this.documentProcessor.convertFromLangChainDoc(doc));
   }
 
   async findSimilarDocuments(query: string, limit = 5): Promise<SearchResult[]> {

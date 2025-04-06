@@ -1,5 +1,5 @@
 import { FlowNode } from "@core/flow/base";
-import { RAGSystem } from "@core/rag";
+import { RAGSystem } from "../rag/RAGSystem";
 import { Document } from "@core/types";
 import { OpenAIClient } from "@core/ai/openAIClient";
 import { SearchResult } from "@core/types";
@@ -11,7 +11,8 @@ export class DocumentLoadingNode extends FlowNode<any, any> {
   }
 
   async process(state: any): Promise<{}> {
-    await this.rag.loadAndAddDocuments(this.path);
+    const documents = await this.rag.loadDocuments(this.path);
+    await this.rag.addDocuments(documents);
     return {};
   }
 }

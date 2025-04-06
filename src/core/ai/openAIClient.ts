@@ -1,6 +1,6 @@
 import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
-import { SearchResult } from "@types";
+import { SearchResult } from "@core/types";
 
 export interface OpenAIConfig {
   apiKey: string;
