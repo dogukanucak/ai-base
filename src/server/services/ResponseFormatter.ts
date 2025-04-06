@@ -1,6 +1,6 @@
-import { SearchResult } from "./SimilarityService";
-import { QueryResponse } from "../plugins/types";
-import { RAGConfig } from "@core/config/types";
+import type { RAGConfig } from "@core/config/types";
+import type { QueryResponse } from "../plugins/types";
+import type { SearchResult } from "./SimilarityService";
 
 export class ResponseFormatter {
   private config: RAGConfig;

@@ -14,7 +14,7 @@ export class TransformersEmbeddingGenerator extends Embeddings {
   private model: FeatureExtractionPipeline | null = null;
   private modelName: string;
 
-  constructor(modelName: string = "Xenova/all-MiniLM-L6-v2") {
+  constructor(modelName = "Xenova/all-MiniLM-L6-v2") {
     super({});
     this.modelName = modelName;
   }

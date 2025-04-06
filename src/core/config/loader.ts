@@ -1,7 +1,7 @@
-import { RAGConfig } from "./types";
-import { defaultConfig } from "./defaults";
 import fs from "fs";
 import path from "path";
+import { defaultConfig } from "./defaults";
+import type { RAGConfig } from "./types";
 
 export class ConfigLoader {
   private static instance: ConfigLoader;
@@ -37,8 +37,10 @@ export class ConfigLoader {
       chunking: {
         type:
           (process.env.CHUNKING_TYPE as RAGConfig["chunking"]["type"]) || this.config.chunking.type,
-        chunkSize: parseInt(process.env.CHUNK_SIZE || String(this.config.chunking.chunkSize)),
-        chunkOverlap: parseInt(
+        chunkSize: Number.parseInt(
+          process.env.CHUNK_SIZE || String(this.config.chunking.chunkSize),
+        ),
+        chunkOverlap: Number.parseInt(
           process.env.CHUNK_OVERLAP || String(this.config.chunking.chunkOverlap),
         ),
         separators: process.env.CHUNK_SEPARATORS
@@ -49,13 +51,15 @@ export class ConfigLoader {
         type:
           (process.env.RETRIEVAL_TYPE as RAGConfig["retrieval"]["type"]) ||
           this.config.retrieval.type,
-        fetchK: parseInt(process.env.FETCH_K || String(this.config.retrieval.fetchK)),
-        lambda: parseFloat(process.env.LAMBDA || String(this.config.retrieval.lambda)),
-        scoreThreshold: parseFloat(
+        fetchK: Number.parseInt(process.env.FETCH_K || String(this.config.retrieval.fetchK)),
+        lambda: Number.parseFloat(process.env.LAMBDA || String(this.config.retrieval.lambda)),
+        scoreThreshold: Number.parseFloat(
           process.env.SCORE_THRESHOLD || String(this.config.retrieval.scoreThreshold),
         ),
         useReranking: process.env.USE_RERANKING === "true" || this.config.retrieval.useReranking,
-        queryCount: parseInt(process.env.QUERY_COUNT || String(this.config.retrieval.queryCount)),
+        queryCount: Number.parseInt(
+          process.env.QUERY_COUNT || String(this.config.retrieval.queryCount),
+        ),
       },
       vectorStore: {
         type:
@@ -73,21 +77,23 @@ export class ConfigLoader {
       },
       openAI: {
         model: process.env.OPENAI_MODEL || this.config.openAI.model,
-        maxTokens: parseInt(process.env.OPENAI_MAX_TOKENS || String(this.config.openAI.maxTokens)),
-        temperature: parseFloat(
+        maxTokens: Number.parseInt(
+          process.env.OPENAI_MAX_TOKENS || String(this.config.openAI.maxTokens),
+        ),
+        temperature: Number.parseFloat(
           process.env.OPENAI_TEMPERATURE || String(this.config.openAI.temperature),
         ),
         enabled: process.env.USE_OPENAI === "true" || this.config.openAI.enabled,
         apiKey: process.env.OPENAI_API_KEY || this.config.openAI.apiKey,
       },
       console: {
-        maxResponseLength: parseInt(
+        maxResponseLength: Number.parseInt(
           process.env.MAX_RESPONSE_LENGTH || String(this.config.console.maxResponseLength),
         ),
         showDebugInfo: process.env.SHOW_DEBUG_INFO === "true" || this.config.console.showDebugInfo,
         truncateDocuments:
           process.env.TRUNCATE_DOCUMENTS === "true" || this.config.console.truncateDocuments,
-        documentPreviewLength: parseInt(
+        documentPreviewLength: Number.parseInt(
           process.env.DOCUMENT_PREVIEW_LENGTH || String(this.config.console.documentPreviewLength),
         ),
       },

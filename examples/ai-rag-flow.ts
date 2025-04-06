@@ -1,8 +1,8 @@
-import { RAGSystem } from "@core/rag";
 import { OpenAIClient } from "@core/ai/openAIClient";
-import { FlowBuilder, RAGState } from "@core/flow/base";
-import { DocumentLoadingNode, DocumentRetrievalNode, AIResponseNode } from "@core/flow/nodes";
 import { ConfigLoader } from "@core/config/loader";
+import { FlowBuilder, type RAGState } from "@core/flow/base";
+import { AIResponseNode, DocumentLoadingNode, DocumentRetrievalNode } from "@core/flow/nodes";
+import { RAGSystem } from "@core/rag";
 
 async function example() {
   // Initialize components

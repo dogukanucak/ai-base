@@ -1,6 +1,6 @@
-import { ServerManagement } from "./server-management/ServerManagement";
-import { EnvEditor } from "./env-editor/EnvEditor";
 import type { BackofficePlugin } from "../types";
+import { EnvEditor } from "./env-editor/EnvEditor";
+import { ServerManagement } from "./server-management/ServerManagement";
 
 export const plugins: BackofficePlugin[] = [
   {

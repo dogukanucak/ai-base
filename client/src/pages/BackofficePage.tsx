@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import type { Component } from "solid-js";
 import { Backoffice } from "../plugins/backoffice/components/Backoffice";
 import { useBackofficeInit } from "../plugins/backoffice/hooks/useBackofficeInit";
 import styles from "./BackofficePage.module.scss";

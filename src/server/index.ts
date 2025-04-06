@@ -1,5 +1,5 @@
-import { Server } from "@server/Server";
 import { ConfigLoader } from "@core/config/loader";
+import { Server } from "@server/Server";
 import dotenv from "dotenv";
 
 async function startServer() {

@@ -1,10 +1,10 @@
-import { Document, SearchResult } from "@core/types";
 import { ConfigLoader } from "@core/config/loader";
+import { DocumentLoaderFactory } from "@core/factory/documentLoaderFactory";
+import type { Document, SearchResult } from "@core/types";
+import dotenv from "dotenv";
 import { ChromaVectorStore } from "./services/ChromaVectorStore";
 import { DocumentProcessor } from "./services/DocumentProcessor";
 import { SearchService } from "./services/SearchService";
-import { DocumentLoaderFactory } from "@core/factory/documentLoaderFactory";
-import dotenv from "dotenv";
 
 export class RAGSystem {
   private vectorStore: ChromaVectorStore;

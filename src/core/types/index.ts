@@ -1,4 +1,4 @@
-import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Document as LangChainDocument } from "@langchain/core/documents";
 
 // Core Types
 export type Document = LangChainDocument;

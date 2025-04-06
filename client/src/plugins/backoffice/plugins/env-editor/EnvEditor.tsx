@@ -1,4 +1,4 @@
-import { createSignal, createEffect, For } from "solid-js";
+import { For, createEffect, createSignal } from "solid-js";
 import type { EnvVariable } from "../../types";
 import styles from "./EnvEditor.module.scss";
 

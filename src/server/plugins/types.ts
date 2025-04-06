@@ -1,6 +1,6 @@
-import { FastifyInstance } from "fastify";
-import { RAGConfig } from "@core/config/types";
-import { Server } from "@server/Server";
+import type { RAGConfig } from "@core/config/types";
+import type { Server } from "@server/Server";
+import type { FastifyInstance } from "fastify";
 
 export interface Plugin {
   name: string;

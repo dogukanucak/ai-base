@@ -1,6 +1,6 @@
-import { RAGSystem } from "@core/rag";
-import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { RAGSystem } from "@core/rag";
 import { SearchResult as LangChainSearchResult } from "@core/types";
+import type { Document as LangChainDocument } from "@langchain/core/documents";
 
 export interface SearchResult {
   document: LangChainDocument;

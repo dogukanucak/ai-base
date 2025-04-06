@@ -1,8 +1,8 @@
+import type { OpenAIClient } from "@core/ai/openAIClient";
 import { FlowNode } from "@core/flow/base";
-import { RAGSystem } from "../rag/RAGSystem";
 import { Document } from "@core/types";
-import { OpenAIClient } from "@core/ai/openAIClient";
-import { SearchResult } from "@core/types";
+import type { SearchResult } from "@core/types";
+import type { RAGSystem } from "../rag/RAGSystem";
 
 // Document loading node
 export class DocumentLoadingNode extends FlowNode<any, any> {

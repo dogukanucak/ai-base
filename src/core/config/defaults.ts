@@ -1,4 +1,4 @@
-import { RAGConfig } from "./types";
+import type { RAGConfig } from "./types";
 
 export const defaultConfig: RAGConfig = {
   embedding: {

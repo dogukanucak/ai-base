@@ -1,10 +1,10 @@
-import * as cheerio from "cheerio";
-import { FlowNode } from "@core/flow/base";
-import { Document as LangChainDocument } from "@langchain/core/documents";
-import { SearchResult } from "@core/types";
 import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import { FlowNode } from "@core/flow/base";
+import type { SearchResult } from "@core/types";
+import { Document as LangChainDocument } from "@langchain/core/documents";
+import * as cheerio from "cheerio";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
 
 export interface WebSearchState {
   query: string;

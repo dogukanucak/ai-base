@@ -1,5 +1,5 @@
-import { createSignal, Accessor, Setter } from "solid-js";
-import { BackofficePlugin } from "./types";
+import { type Accessor, type Setter, createSignal } from "solid-js";
+import type { BackofficePlugin } from "./types";
 
 type Signal<T> = [get: Accessor<T>, set: Setter<T>];
 

@@ -1,7 +1,7 @@
-import { ISearchService } from "../interfaces/ISearchService";
-import { SearchResult } from "../../types";
 import { ConfigLoader } from "../../config/loader";
-import { IVectorStore } from "../interfaces/IVectorStore";
+import type { SearchResult } from "../../types";
+import type { ISearchService } from "../interfaces/ISearchService";
+import type { IVectorStore } from "../interfaces/IVectorStore";
 
 export class SearchService implements ISearchService {
   private configLoader: ConfigLoader;
@@ -14,7 +14,7 @@ export class SearchService implements ISearchService {
     this.similarityThreshold = this.configLoader.getConfig().retrieval.scoreThreshold || 0.5;
   }
 
-  async search(query: string, limit: number = 5): Promise<SearchResult[]> {
+  async search(query: string, limit = 5): Promise<SearchResult[]> {
     const results = await this.vectorStore.findSimilar(query, limit * 2);
     return this.filterResults(results, limit);
   }

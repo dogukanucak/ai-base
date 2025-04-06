@@ -1,6 +1,6 @@
 import { onMount } from "solid-js";
-import { backofficeStore } from "../store";
 import { plugins } from "../plugins";
+import { backofficeStore } from "../store";
 
 export const useBackoffice = () => {
   onMount(() => {

@@ -1,8 +1,8 @@
-import { createSignal, For, Show } from "solid-js";
-import { Message } from "../types/chat";
+import { For, Show, createSignal } from "solid-js";
 import { chatService } from "../services/chatService";
-import { MessageContent } from "./MessageContent";
+import type { Message } from "../types/chat";
 import styles from "./Chat.module.scss";
+import { MessageContent } from "./MessageContent";
 
 export default function Chat() {
   const [messages, setMessages] = createSignal<Message[]>([]);

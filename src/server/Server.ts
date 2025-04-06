@@ -1,10 +1,10 @@
-import fastify, { FastifyInstance } from "fastify";
-import cors from "@fastify/cors";
-import { Plugin } from "@server/plugins/types";
 import { ConfigLoader } from "@core/config/loader";
-import { RAGConfig } from "@core/config/types";
-import { RAGPlugin } from "@server/plugins/ragPlugin";
+import type { RAGConfig } from "@core/config/types";
+import cors from "@fastify/cors";
 import { BackofficePlugin } from "@server/plugins/backoffice/BackofficePlugin";
+import { RAGPlugin } from "@server/plugins/ragPlugin";
+import type { Plugin } from "@server/plugins/types";
+import fastify, { type FastifyInstance } from "fastify";
 
 export class Server {
   private app: FastifyInstance;
@@ -18,7 +18,7 @@ export class Server {
     this.plugins.push(new BackofficePlugin());
   }
 
-  async start(port: number = 3000): Promise<void> {
+  async start(port = 3000): Promise<void> {
     try {
       await this.app.register(cors, {
         origin: true,

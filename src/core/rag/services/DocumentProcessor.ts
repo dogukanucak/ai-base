@@ -1,8 +1,8 @@
-import { IDocumentProcessor } from "../interfaces/IDocumentProcessor";
-import { Document } from "../../types";
 import { Document as LangChainDocument } from "@langchain/core/documents";
 import { ConfigLoader } from "../../config/loader";
 import { TextSplitterFactory } from "../../factory/textSplitterFactory";
+import type { Document } from "../../types";
+import type { IDocumentProcessor } from "../interfaces/IDocumentProcessor";
 
 export class DocumentProcessor implements IDocumentProcessor {
   private configLoader: ConfigLoader;

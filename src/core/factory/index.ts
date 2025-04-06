@@ -1,10 +1,10 @@
-import { Embeddings } from "@langchain/core/embeddings";
-import { VectorStore } from "@langchain/core/vectorstores";
-import { DocumentLoader } from "@core/types";
-import { EmbeddingConfig, VectorStoreConfig, DocumentLoaderConfig } from "@core/config/types";
-import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
-import { Chroma } from "@langchain/community/vectorstores/chroma";
+import type { DocumentLoaderConfig, EmbeddingConfig, VectorStoreConfig } from "@core/config/types";
 import { MarkdownLoader } from "@core/documents/loader";
+import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
+import type { DocumentLoader } from "@core/types";
+import { Chroma } from "@langchain/community/vectorstores/chroma";
+import type { Embeddings } from "@langchain/core/embeddings";
+import type { VectorStore } from "@langchain/core/vectorstores";
 
 export class RAGFactory {
   static createEmbeddingGenerator(config: EmbeddingConfig): Embeddings {

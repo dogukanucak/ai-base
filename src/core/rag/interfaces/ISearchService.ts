@@ -1,4 +1,4 @@
-import { SearchResult } from "../../types";
+import type { SearchResult } from "../../types";
 
 export interface ISearchService {
   search(query: string, limit?: number): Promise<SearchResult[]>;

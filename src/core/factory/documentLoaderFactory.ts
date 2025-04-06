@@ -1,11 +1,11 @@
-import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
-import { TextLoader } from "langchain/document_loaders/fs/text";
-import { DocumentLoaderConfig } from "@core/config/types";
-import { MarkdownLoader } from "@core/documents/loader";
 import fs from "fs";
 import path from "path";
+import type { DocumentLoaderConfig } from "@core/config/types";
+import { MarkdownLoader } from "@core/documents/loader";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
+import type { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
+import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
+import { TextLoader } from "langchain/document_loaders/fs/text";
 
 export class DocumentLoaderFactory {
   static create(config: DocumentLoaderConfig): BaseDocumentLoader {

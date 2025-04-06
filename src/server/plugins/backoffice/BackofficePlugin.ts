@@ -1,8 +1,8 @@
-import { FastifyInstance } from "fastify";
-import { Plugin } from "@server/plugins/types";
-import { RAGConfig } from "@core/config/types";
-import { Server } from "@server/Server";
 import os from "os";
+import type { RAGConfig } from "@core/config/types";
+import type { Server } from "@server/Server";
+import type { Plugin } from "@server/plugins/types";
+import type { FastifyInstance } from "fastify";
 
 export class BackofficePlugin implements Plugin {
   public readonly name = "backoffice";

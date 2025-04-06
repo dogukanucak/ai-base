@@ -1,9 +1,9 @@
-import { QueryResponse } from "../types/chat";
+import type { QueryResponse } from "../types/chat";
 
 class ChatService {
   private readonly API_URL = "http://localhost:3000/api";
 
-  async sendQuery(query: string, maxResults: number = 5): Promise<QueryResponse> {
+  async sendQuery(query: string, maxResults = 5): Promise<QueryResponse> {
     const response = await fetch(`${this.API_URL}/query`, {
       method: "POST",
       headers: {

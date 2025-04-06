@@ -1,5 +1,5 @@
-import { Document } from "../../types";
-import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Document } from "../../types";
 
 export interface IDocumentProcessor {
   splitDocuments(documents: Document[]): Promise<Document[]>;

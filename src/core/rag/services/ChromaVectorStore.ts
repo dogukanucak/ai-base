@@ -1,8 +1,8 @@
 import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { IVectorStore } from "../interfaces/IVectorStore";
-import { Document, SearchResult } from "../../types";
-import { TransformersEmbeddingGenerator } from "../../embeddings/generator";
 import { ConfigLoader } from "../../config/loader";
+import { TransformersEmbeddingGenerator } from "../../embeddings/generator";
+import type { Document, SearchResult } from "../../types";
+import type { IVectorStore } from "../interfaces/IVectorStore";
 
 export class ChromaVectorStore implements IVectorStore {
   private vectorStore!: Chroma;
@@ -14,7 +14,7 @@ export class ChromaVectorStore implements IVectorStore {
     this.embeddings = new TransformersEmbeddingGenerator();
   }
 
-  async initialize(reset: boolean = false): Promise<void> {
+  async initialize(reset = false): Promise<void> {
     const config = this.configLoader.getConfig();
     if (reset || !this.vectorStore) {
       try {
@@ -35,7 +35,7 @@ export class ChromaVectorStore implements IVectorStore {
     await this.vectorStore.addDocuments(documents);
   }
 
-  async findSimilar(query: string, limit: number = 5): Promise<SearchResult[]> {
+  async findSimilar(query: string, limit = 5): Promise<SearchResult[]> {
     const results = await this.vectorStore.similaritySearchWithScore(query, limit);
     return results.map(([doc, score]) => ({
       document: doc,

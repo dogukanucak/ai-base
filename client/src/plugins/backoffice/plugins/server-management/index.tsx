@@ -1,5 +1,5 @@
-import { Component } from "solid-js";
-import { BackofficePlugin } from "../../types";
+import type { Component } from "solid-js";
+import type { BackofficePlugin } from "../../types";
 import { ServerManagement } from "./ServerManagement";
 
 const ServerManagementContent: Component = () => {

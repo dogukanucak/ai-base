@@ -1,9 +1,9 @@
+import { A, Router } from "@solidjs/router";
 import type { Component } from "solid-js";
 import { createSignal, onMount } from "solid-js";
-import { Router, A } from "@solidjs/router";
+import styles from "./App.module.scss";
 import Chat from "./components/Chat";
 import BackofficePage from "./pages/BackofficePage";
-import styles from "./App.module.scss";
 
 const App: Component = () => {
   const [currentPath, setCurrentPath] = createSignal(window.location.pathname);

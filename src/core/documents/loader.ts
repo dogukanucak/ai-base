@@ -1,10 +1,10 @@
-import { glob } from "glob";
-import { readFile } from "fs/promises";
-import * as path from "path";
-import frontMatter from "front-matter";
-import { Document } from "@langchain/core/documents";
-import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 import fs from "fs";
+import * as path from "path";
+import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
+import { Document } from "@langchain/core/documents";
+import frontMatter from "front-matter";
+import { readFile } from "fs/promises";
+import { glob } from "glob";
 
 interface MarkdownAttributes {
   title?: string;
@@ -16,7 +16,7 @@ interface MarkdownAttributes {
 export class MarkdownLoader extends BaseDocumentLoader {
   private docsPath: string;
 
-  constructor(docsPath: string = "docs") {
+  constructor(docsPath = "docs") {
     super();
     this.docsPath = path.resolve(docsPath);
   }

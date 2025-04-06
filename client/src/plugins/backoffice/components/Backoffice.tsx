@@ -1,7 +1,7 @@
-import { Component, For, Show, createEffect, createMemo } from "solid-js";
+import { type Component, For, Show, createEffect, createMemo } from "solid-js";
 import { backofficeStore } from "../store";
-import styles from "./Backoffice.module.scss";
 import type { BackofficePlugin } from "../types";
+import styles from "./Backoffice.module.scss";
 
 export const Backoffice: Component = () => {
   const activePlugin = createMemo(() => {

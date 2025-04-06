@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
-import { Message } from "../types/chat";
 import { useTextStreaming } from "../hooks/useTextStreaming";
+import type { Message } from "../types/chat";
 
 interface MessageContentProps {
   message: Message;

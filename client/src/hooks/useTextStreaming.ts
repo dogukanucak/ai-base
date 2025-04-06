@@ -8,7 +8,7 @@ interface TextStreamingHook {
 export function useTextStreaming(
   fullText: string,
   onComplete: () => void,
-  delay: number = 20,
+  delay = 20,
 ): TextStreamingHook {
   const [streamedText, setStreamedText] = createSignal("");
 

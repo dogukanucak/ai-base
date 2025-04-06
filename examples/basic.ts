@@ -1,7 +1,7 @@
-import { RAGSystem } from "@core/rag";
 import { FlowBuilder } from "@core/flow/base";
-import { DocumentLoadingNode, CombineResultsNode } from "@core/flow/nodes";
-import { WebSearchNode, WebSearchState } from "@core/flow/web-flows";
+import { CombineResultsNode, DocumentLoadingNode } from "@core/flow/nodes";
+import { WebSearchNode, type WebSearchState } from "@core/flow/web-flows";
+import { RAGSystem } from "@core/rag";
 
 async function example() {
   const rag = new RAGSystem();

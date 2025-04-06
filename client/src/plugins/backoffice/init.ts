@@ -1,6 +1,6 @@
-import { backofficeStore } from "./store";
-import { ServerManagementPlugin } from "./plugins/server-management";
 import { EnvEditorPlugin } from "./plugins/env-editor";
+import { ServerManagementPlugin } from "./plugins/server-management";
+import { backofficeStore } from "./store";
 
 export function initializeBackofficePlugins() {
   // Register all plugins

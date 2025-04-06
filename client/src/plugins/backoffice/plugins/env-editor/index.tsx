@@ -1,5 +1,5 @@
 import { Component } from "solid-js";
-import { BackofficePlugin } from "../../types";
+import type { BackofficePlugin } from "../../types";
 import { EnvEditor } from "./EnvEditor";
 
 export class EnvEditorPlugin implements BackofficePlugin {

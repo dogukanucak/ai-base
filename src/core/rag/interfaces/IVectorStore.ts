@@ -1,5 +1,5 @@
-import { Document } from "../../types";
-import { SearchResult } from "../../types";
+import type { Document } from "../../types";
+import type { SearchResult } from "../../types";
 
 export interface IVectorStore {
   initialize(reset?: boolean): Promise<void>;
