@@ -29,8 +29,7 @@ export const defaultConfig: RAGConfig = {
     url: "http://localhost:8000",
   },
   documentLoader: {
-    type: "markdown",
-    path: "./documents",
+    path: "./docs",
     enabled: true,
   },
   openAI: {

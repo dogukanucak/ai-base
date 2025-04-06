@@ -21,6 +21,23 @@ export class RAGSystem {
     const config = this.configLoader.getConfig();
     this.embeddings = new TransformersEmbeddingGenerator();
     this.documentLoader = DocumentLoaderFactory.create(config.documentLoader);
+    
+    // Automatically load and add documents if enabled
+    if (config.documentLoader.enabled) {
+      this.initializeDocuments().catch(console.error);
+    }
+  }
+
+  private async initializeDocuments(): Promise<void> {
+    try {
+      const config = this.configLoader.getConfig();
+      const documents = await this.loadDocuments(config.documentLoader.path);
+      console.log(`Found ${documents.length} documents`);
+      await this.addDocuments(documents);
+      console.log("Documents added to vector store");
+    } catch (error) {
+      console.error("Error initializing documents:", error);
+    }
   }
 
   private async initVectorStore(reset: boolean = false): Promise<void> {
@@ -105,5 +122,32 @@ export class RAGSystem {
 
   async clearDocuments(): Promise<void> {
     await this.initVectorStore(true); // Force new collection creation
+  }
+
+  /**
+   * Helper method to load and add documents in one step
+   * @param path Path to documents directory
+   * @returns Number of documents loaded and added
+   */
+  async loadAndAddDocuments(path: string): Promise<number> {
+    try {
+      console.log(`Loading documents from ${path}...`);
+      const documents = await this.loadDocuments(path);
+      console.log(`Found ${documents.length} documents`);
+      
+      if (documents.length === 0) {
+        console.warn("No documents found in the specified path");
+        return 0;
+      }
+
+      console.log("Adding documents to vector store...");
+      await this.addDocuments(documents);
+      console.log("Documents successfully added to vector store");
+      
+      return documents.length;
+    } catch (error) {
+      console.error("Error loading and adding documents:", error);
+      throw error;
+    }
   }
 }

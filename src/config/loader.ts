@@ -9,6 +9,7 @@ export class ConfigLoader {
 
   private constructor(config: Partial<RAGConfig> = {}) {
     this.config = { ...defaultConfig, ...config };
+    this.loadFromEnv();
   }
 
   public static getInstance(): ConfigLoader {
@@ -53,9 +54,8 @@ export class ConfigLoader {
         url: process.env.VECTOR_STORE_URL || this.config.vectorStore.url,
       },
       documentLoader: {
-        type: (process.env.DOCUMENT_TYPE as RAGConfig["documentLoader"]["type"]) || this.config.documentLoader.type,
-        path: process.env.DOCUMENT_PATH || this.config.documentLoader.path,
-        enabled: process.env.DOCUMENT_LOADER_ENABLED === "true" || this.config.documentLoader.enabled,
+        path: process.env.DOCUMENTS_PATH ? path.resolve(process.cwd(), process.env.DOCUMENTS_PATH) : this.config.documentLoader.path,
+        enabled: process.env.LOAD_DOCUMENTS === "true" || this.config.documentLoader.enabled,
       },
       openAI: {
         model: process.env.OPENAI_MODEL || this.config.openAI.model,

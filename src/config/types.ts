@@ -30,7 +30,6 @@ export interface VectorStoreConfig {
 }
 
 export interface DocumentLoaderConfig {
-  type: "markdown" | "pdf" | "docx" | "multi";
   path: string;
   enabled: boolean;
 }

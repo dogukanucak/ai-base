@@ -5,13 +5,14 @@ async function example() {
 
   // Clear existing documents
   await rag.clearDocuments();
+  console.log("Cleared existing documents");
 
-  // Load documents
-  const documents = await rag.loadDocuments("docs");
-  console.log(`Found ${documents.length} documents`);
-
-  // Add documents to RAG system
-  await rag.addDocuments(documents);
+  // Load and add documents in one step
+  const documentCount = await rag.loadAndAddDocuments("docs");
+  if (documentCount === 0) {
+    console.log("No documents were loaded. Exiting...");
+    return;
+  }
 
   const queries = ["where can I study to learn about Game development"];
 
