@@ -1,6 +1,7 @@
 import { RAGSystem } from "../src/rag";
-import { FlowBuilder, RAGState } from "../src/flow";
+import { FlowBuilder } from "../src/flow";
 import { DocumentLoadingNode, DocumentRetrievalNode, AIResponseNode } from "../src/flow/nodes";
+import { WebContentLoaderNode, WebContentState } from "../src/flow/web-content-node";
 
 async function example() {
   const rag = new RAGSystem();
@@ -8,14 +9,18 @@ async function example() {
   // Load documents from the docs directory (will include both markdown and PDF files)
   await rag.loadAndAddDocuments("docs");
 
-  // Create a simple RAG flow
-  const flow = new FlowBuilder<RAGState>()
-    .addNode("load", new DocumentLoadingNode(rag, "docs"))
+  // Create a RAG flow with both document and web content search
+  const flow = new FlowBuilder<WebContentState>()
+    .addNode("load-docs", new DocumentLoadingNode(rag, "docs"))
+    .addNode("load-web", new WebContentLoaderNode(rag))
     .addNode("retrieve", new DocumentRetrievalNode(rag));
 
-  // Use the flow to search for content in both markdown and PDF files
+  // Use the flow to search for content in documents and web pages
   const result = await flow.execute({
-    query: "What information is stored in the PDF?",
+    query: "I want to study somewhere following  Bologna process and the European Commission",
+    urls: [
+      "https://dm.ieu.edu.tr/en/hakkimizda",
+    ],
     aiResponse: undefined
   });
 

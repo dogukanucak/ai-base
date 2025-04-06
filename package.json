@@ -25,6 +25,7 @@
     "@langchain/core": "^0.3.43",
     "@langchain/langgraph": "^0.2.63",
     "@langchain/openai": "^0.5.4",
+    "cheerio": "^1.0.0",
     "chromadb": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -35,7 +36,7 @@
     "glob": "^11.0.1",
     "inversify": "^7.5.0",
     "langchain": "^0.3.19",
-    "openai": "^4.91.1",   
+    "openai": "^4.91.1",
     "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
