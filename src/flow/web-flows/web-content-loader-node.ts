@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import { FlowNode } from './base';
+import { FlowNode } from '../base';
 import { RAGSystem } from '@rag';
 import { Document as LangChainDocument } from '@langchain/core/documents';
 

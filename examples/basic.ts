@@ -1,25 +1,23 @@
 import { RAGSystem } from "../src/rag";
-import { FlowBuilder } from "../src/flow";
+import { FlowBuilder, WebSearchNode } from "../src/flow";
 import { DocumentLoadingNode, DocumentRetrievalNode, AIResponseNode } from "../src/flow/nodes";
-import { WebContentLoaderNode, WebContentState } from "../src/flow/web-content-node";
+import { WebContentLoaderNode, WebContentState } from "../src/flow/web-flows/web-content-loader-node";
 
 async function example() {
   const rag = new RAGSystem();
   
-  // Load documents from the docs directory (will include both markdown and PDF files)
-  await rag.loadAndAddDocuments("docs");
-
   // Create a RAG flow with both document and web content search
   const flow = new FlowBuilder<WebContentState>()
-    .addNode("load-docs", new DocumentLoadingNode(rag, "docs"))
-    .addNode("load-web", new WebContentLoaderNode(rag))
-    .addNode("retrieve", new DocumentRetrievalNode(rag));
+   // .addNode("load-docs", new DocumentLoadingNode(rag, "docs"))
+    .addNode("search-web", new WebSearchNode());
+    
+    //.addNode("retrieve", new DocumentRetrievalNode(rag));
 
   // Use the flow to search for content in documents and web pages
   const result = await flow.execute({
-    query: "I want to study somewhere following  Bologna process and the European Commission",
+    query: "The purpose of Gastronomy and Culinary Arts program in the field of gastronomy",
     urls: [
-      "https://dm.ieu.edu.tr/en/hakkimizda",
+      "https://culinary.ieu.edu.tr/en/hakkimizda",
     ],
     aiResponse: undefined
   });
