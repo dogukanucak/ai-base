@@ -1,8 +1,8 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
-import { RAGSystem } from "../../rag";
-import { RAGConfig } from "../../config/types";
+import { RAGSystem } from "@rag";
+import { RAGConfig } from "@config/types";
 import { QueryRequest } from "./types";
-import { OpenAIClient } from "../../ai/openAIClient";
+import { OpenAIClient } from "@ai/openAIClient";
 import { SimilarityService } from "../services/SimilarityService";
 import { ResponseFormatter } from "../services/ResponseFormatter";
 import { Plugin } from "./types";
@@ -15,11 +15,16 @@ export class RAGPlugin implements Plugin {
   private similarityService: SimilarityService;
   private responseFormatter: ResponseFormatter;
   private openai: OpenAIClient | null = null;
+  private config: RAGConfig;
+  private rag: RAGSystem;
+  private openAIClient: OpenAIClient;
 
-  constructor() {
-    const rag = new RAGSystem();
-    this.similarityService = new SimilarityService(rag);
-    this.responseFormatter = new ResponseFormatter();
+  constructor(config: RAGConfig) {
+    this.config = config;
+    this.rag = new RAGSystem();
+    this.openAIClient = new OpenAIClient({ ...config.openAI, apiKey: config.openAI.apiKey || "" });
+    this.similarityService = new SimilarityService(this.rag);
+    this.responseFormatter = new ResponseFormatter(config);
   }
 
   async register(app: FastifyInstance, config: RAGConfig, server: Server): Promise<void> {
@@ -89,8 +94,7 @@ export class RAGPlugin implements Plugin {
             aiResponse = await this.openai.getResponse(query, searchResults);
           }
 
-          const response = this.responseFormatter.format(query, searchResults, searchResults, config, aiResponse);
-
+          const response = this.responseFormatter.formatResponse(query, searchResults);
           reply.send(response);
         } catch (error) {
           console.error("Error processing query:", error);
@@ -101,5 +105,17 @@ export class RAGPlugin implements Plugin {
         }
       }
     );
+  }
+
+  async handleQuery(request: FastifyRequest<{ Body: QueryRequest }>, reply: FastifyReply): Promise<void> {
+    const { query } = request.body;
+    const searchResults = await this.similarityService.findRelevantDocuments(
+      query,
+      this.config.retrieval.fetchK || 5,
+      this.config.retrieval.scoreThreshold || 0.7
+    );
+    const aiResponse = await this.openAIClient.getResponse(query, searchResults);
+    const response = this.responseFormatter.formatResponse(query, searchResults);
+    await reply.send(response);
   }
 }

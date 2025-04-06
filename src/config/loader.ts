@@ -54,6 +54,7 @@ export class ConfigLoader {
         url: process.env.VECTOR_STORE_URL || this.config.vectorStore.url,
       },
       documentLoader: {
+        type: "markdown" as const,
         path: process.env.DOCUMENTS_PATH ? path.resolve(process.cwd(), process.env.DOCUMENTS_PATH) : this.config.documentLoader.path,
         enabled: process.env.LOAD_DOCUMENTS === "true" || this.config.documentLoader.enabled,
       },

@@ -1,8 +1,9 @@
 import { RAGSystem } from "../../rag";
-import { Document } from "../../documents/types";
+import { Document as LangChainDocument } from "@langchain/core/documents";
+import { SearchResult as LangChainSearchResult } from "@types";
 
 export interface SearchResult {
-  document: Document;
+  document: LangChainDocument;
   score: number;
 }
 
@@ -19,6 +20,6 @@ export class SimilarityService {
   }
 
   async loadDocuments(path: string): Promise<void> {
-    await this.rag.loadMarkdownDocuments(path);
+    await this.rag.loadDocuments(path);
   }
 }

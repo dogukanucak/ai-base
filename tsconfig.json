@@ -17,6 +17,7 @@
       "@factory/*": ["./src/factory/*"],
       "@embeddings/*": ["./src/embeddings/*"],
       "@flow/*": ["./src/flow/*"],
+      "@rag": ["./src/rag"],
       "@rag/*": ["./src/rag/*"],
       "@server/*": ["./src/server/*"],
       "@types": ["./src/types"],

@@ -29,6 +29,7 @@ export const defaultConfig: RAGConfig = {
     url: "http://localhost:8000",
   },
   documentLoader: {
+    type: "markdown" as const,
     path: "./docs",
     enabled: true,
   },

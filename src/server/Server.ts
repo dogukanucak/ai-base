@@ -11,10 +11,10 @@ export class Server {
   private config: RAGConfig;
   private plugins: Plugin[] = [];
 
-  constructor(config: RAGConfig) {
+  constructor() {
     this.app = fastify();
-    this.config = config;
-    this.plugins.push(new RAGPlugin());
+    this.config = ConfigLoader.getInstance().getConfig();
+    this.plugins.push(new RAGPlugin(this.config));
     this.plugins.push(new BackofficePlugin());
   }
 
