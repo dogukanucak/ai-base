@@ -5,9 +5,9 @@ import { backofficeStore } from "../store";
 export const useBackoffice = () => {
   onMount(() => {
     // Register all default plugins
-    plugins.forEach((plugin) => {
+    for (const plugin of plugins) {
       backofficeStore.registerPlugin(plugin);
-    });
+    }
 
     // Set the first plugin as active by default
     if (plugins.length > 0) {

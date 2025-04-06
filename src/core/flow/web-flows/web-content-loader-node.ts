@@ -2,11 +2,12 @@ import { FlowNode } from "@core/flow/base";
 import type { RAGSystem } from "@core/rag";
 import { Document as LangChainDocument } from "@langchain/core/documents";
 import * as cheerio from "cheerio";
+import type { SearchResult } from "@core/types";
 
 export interface WebContentState {
   query: string;
   urls: string[];
-  searchResults?: any[];
+  searchResults?: SearchResult[];
   aiResponse?: string;
 }
 
@@ -15,9 +16,9 @@ export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentSt
     super();
   }
 
-  async process(state: WebContentState): Promise<{}> {
+  async process(state: WebContentState): Promise<WebContentState> {
     if (!state.urls || state.urls.length === 0) {
-      return {};
+      return { ...state, searchResults: [] };
     }
 
     const documents: LangChainDocument[] = [];
@@ -48,7 +49,7 @@ export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentSt
     }
 
     await this.rag.addDocuments(documents);
-    return {};
+    return { ...state, searchResults: [] };
   }
 
   private extractMainContent($: cheerio.CheerioAPI): string {

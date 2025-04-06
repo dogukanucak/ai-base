@@ -32,13 +32,10 @@ class ChatService {
       return data.aiResponse + docReference;
     }
 
-    return (
-      "I found these relevant documents:\n\n" +
-      data.documents
-        .filter((doc) => doc.isRelevant)
-        .map((doc) => `${doc.content} (Similarity: ${(doc.similarity * 100).toFixed(1)}%)`)
-        .join("\n\n")
-    );
+    return `I found these relevant documents:\n\n${data.documents
+      .filter((doc) => doc.isRelevant)
+      .map((doc) => `${doc.content} (Similarity: ${(doc.similarity * 100).toFixed(1)}%)`)
+      .join("\n\n")}`;
   }
 }
 

@@ -1,12 +1,19 @@
 import { ConfigLoader } from "@core/config/loader";
-import { DocumentLoaderFactory } from "@core/factory/documentLoaderFactory";
-import type { Document, SearchResult } from "@core/types";
+import { createDocumentLoader } from "@core/factory/documentLoaderFactory";
+import type { Document } from "@langchain/core/documents";
+import type { SearchResult } from "@core/types";
 import dotenv from "dotenv";
 import { ChromaVectorStore } from "./services/ChromaVectorStore";
 import { DocumentProcessor } from "./services/DocumentProcessor";
 import { SearchService } from "./services/SearchService";
 
-export class RAGSystem {
+export interface IRAGSystem {
+  loadDocuments(path: string): Promise<Document[]>;
+  addDocuments(documents: Document[]): Promise<void>;
+  findSimilarDocuments(query: string): Promise<SearchResult[]>;
+}
+
+export class RAGSystem implements IRAGSystem {
   private vectorStore: ChromaVectorStore;
   private documentProcessor: DocumentProcessor;
   private searchService: SearchService;
@@ -36,7 +43,7 @@ export class RAGSystem {
       ...this.configLoader.getConfig().documentLoader,
       path,
     };
-    const documentLoader = DocumentLoaderFactory.create(config);
+    const documentLoader = createDocumentLoader(config);
     const docs = await documentLoader.load();
     return docs.map((doc: Document) => this.documentProcessor.convertFromLangChainDoc(doc));
   }

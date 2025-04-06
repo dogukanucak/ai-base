@@ -1,16 +1,16 @@
-import fs from "fs";
-import * as path from "path";
+import fs from "node:fs";
+import * as path from "node:path";
 import { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 import { Document } from "@langchain/core/documents";
 import frontMatter from "front-matter";
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 import { glob } from "glob";
 
 interface MarkdownAttributes {
   title?: string;
   description?: string;
   tags?: string[];
-  [key: string]: any;
+  [key: string]: string | number | boolean | null | undefined | string[];
 }
 
 export class MarkdownLoader extends BaseDocumentLoader {

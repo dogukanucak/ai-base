@@ -2,7 +2,7 @@ export interface Document {
   id: string;
   content: string;
   metadata?: {
-    [key: string]: any;
+    [key: string]: string | number | boolean | null | undefined;
   };
   embedding?: number[];
 }

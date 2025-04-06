@@ -20,6 +20,7 @@ export const Backoffice: Component = () => {
               class={styles.pluginButton}
               classList={{ [styles.active]: backofficeStore.activePluginId() === plugin.id }}
               onClick={() => backofficeStore.setActivePlugin(plugin.id)}
+              type="button"
             >
               <span class={styles.icon}>{plugin.icon}</span>
               <span class={styles.name}>{plugin.name}</span>

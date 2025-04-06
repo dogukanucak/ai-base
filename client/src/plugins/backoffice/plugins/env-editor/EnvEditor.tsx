@@ -66,10 +66,11 @@ export const EnvEditor = () => {
                     <button
                       class={styles.saveButton}
                       onClick={() => updateVariable(variable.key, newValue())}
+                      type="button"
                     >
                       Save
                     </button>
-                    <button class={styles.cancelButton} onClick={cancelEditing}>
+                    <button class={styles.cancelButton} onClick={cancelEditing} type="button">
                       Cancel
                     </button>
                   </div>
@@ -78,7 +79,7 @@ export const EnvEditor = () => {
                     <span class={variable.isSecret ? styles.secretValue : ""}>
                       {variable.isSecret ? "••••••••" : variable.value}
                     </span>
-                    <button class={styles.editButton} onClick={() => startEditing(variable)}>
+                    <button class={styles.editButton} onClick={() => startEditing(variable)} type="button">
                       Edit
                     </button>
                   </div>

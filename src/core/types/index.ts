@@ -31,4 +31,4 @@ export interface DocumentLoader {
 }
 
 // Metadata Types
-export type DocumentMetadata = Record<string, any>;
+export type DocumentMetadata = Record<string, string | number | boolean | null | undefined>;

@@ -1,4 +1,4 @@
-import os from "os";
+import os from "node:os";
 import type { RAGConfig } from "@core/config/types";
 import type { Server } from "@server/Server";
 import type { Plugin } from "@server/plugins/types";

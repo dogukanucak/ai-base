@@ -51,21 +51,21 @@ export const ServerManagement = () => {
 
         <div class={styles.metrics}>
           <div class={styles.metric}>
-            <label>Uptime</label>
-            <span>
+            <label htmlFor="uptime">Uptime</label>
+            <span id="uptime">
               {Math.floor(status().uptime / 3600)}h {Math.floor((status().uptime % 3600) / 60)}m
             </span>
           </div>
           <div class={styles.metric}>
-            <label>Memory Usage</label>
-            <span>
+            <label htmlFor="memory">Memory Usage</label>
+            <span id="memory">
               {Math.round(status().memory.used / 1024 / 1024)}MB /{" "}
               {Math.round(status().memory.total / 1024 / 1024)}MB
             </span>
           </div>
           <div class={styles.metric}>
-            <label>CPU Usage</label>
-            <span>{status().cpu.toFixed(1)}%</span>
+            <label htmlFor="cpu">CPU Usage</label>
+            <span id="cpu">{status().cpu.toFixed(1)}%</span>
           </div>
         </div>
 
@@ -74,6 +74,7 @@ export const ServerManagement = () => {
             class={`${styles.actionButton} ${styles.start}`}
             onClick={() => handleServerAction("start")}
             disabled={status().isRunning}
+            type="button"
           >
             Start Server
           </button>
@@ -81,6 +82,7 @@ export const ServerManagement = () => {
             class={`${styles.actionButton} ${styles.stop}`}
             onClick={() => handleServerAction("stop")}
             disabled={!status().isRunning}
+            type="button"
           >
             Stop Server
           </button>
@@ -88,6 +90,7 @@ export const ServerManagement = () => {
             class={`${styles.actionButton} ${styles.restart}`}
             onClick={() => handleServerAction("restart")}
             disabled={!status().isRunning}
+            type="button"
           >
             Restart Server
           </button>
