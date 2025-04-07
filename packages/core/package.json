@@ -1,0 +1,35 @@
+{
+  "name": "@ai-base/core",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "example:basic": "tsx examples/basic.ts",
+    "example:ai-rag": "tsx examples/ai-rag-flow.ts"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.4.2",
+    "@langchain/community": "^0.3.39",
+    "@langchain/core": "^0.3.43",
+    "@langchain/langgraph": "^0.2.63",
+    "@langchain/openai": "^0.5.4",
+    "cheerio": "^1.0.0",
+    "chromadb": "^2.2.0",
+    "dotenv": "^16.4.7",
+    "faiss-node": "^0.5.1",
+    "front-matter": "^4.0.2",
+    "glob": "^11.0.1",
+    "inversify": "^7.5.0",
+    "langchain": "^0.3.19",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.91.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.30",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+} 

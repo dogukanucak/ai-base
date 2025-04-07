@@ -1,0 +1,19 @@
+{
+  "name": "@ai-base/projects",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit",
+    "university-agent": "tsx UniversityAgent/examples/index.ts"
+  },
+  "dependencies": {
+    "@ai-base/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.30",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+} 
