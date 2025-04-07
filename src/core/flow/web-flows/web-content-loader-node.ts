@@ -1,55 +1,44 @@
 import { FlowNode } from "@core/flow/base";
 import type { RAGSystem } from "@core/rag";
-import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Document } from "@langchain/core/documents";
 import * as cheerio from "cheerio";
 import type { SearchResult } from "@core/types";
 
-export interface WebContentState {
+export interface WebSearchState {
   query: string;
   urls: string[];
-  searchResults?: SearchResult[];
+  documents: Document[];
+  searchResults: SearchResult[];
   aiResponse?: string;
 }
 
-export class WebContentLoaderNode extends FlowNode<WebContentState, WebContentState> {
+export class WebContentLoaderNode extends FlowNode<WebSearchState, WebSearchState> {
   constructor(private rag: RAGSystem) {
     super();
   }
 
-  async process(state: WebContentState): Promise<WebContentState> {
+  async process(state: WebSearchState): Promise<Partial<WebSearchState>> {
     if (!state.urls || state.urls.length === 0) {
       return { ...state, searchResults: [] };
     }
 
-    const documents: LangChainDocument[] = [];
-
+    const results: SearchResult[] = [];
     for (const url of state.urls) {
-      try {
-        const response = await fetch(url);
-        const html = await response.text();
-        const $ = cheerio.load(html);
+      const response = await fetch(url);
+      const html = await response.text();
+      const $ = cheerio.load(html);
+      const content = $("body").text();
 
-        const content = this.extractMainContent($);
-
-        documents.push(
-          new LangChainDocument({
-            pageContent: content,
-            metadata: {
-              source: url,
-              title: this.extractTitle($),
-              type: "web",
-              domain: new URL(url).hostname,
-              lastFetched: new Date().toISOString(),
-            },
-          }),
-        );
-      } catch (error) {
-        console.error(`Failed to fetch content from ${url}:`, error);
-      }
+      results.push({
+        document: {
+          pageContent: content,
+          metadata: { source: url, type: "web" },
+        },
+        score: 1.0,
+      });
     }
 
-    await this.rag.addDocuments(documents);
-    return { ...state, searchResults: [] };
+    return { searchResults: results };
   }
 
   private extractMainContent($: cheerio.CheerioAPI): string {

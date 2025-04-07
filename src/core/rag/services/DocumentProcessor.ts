@@ -1,6 +1,6 @@
 import { Document as LangChainDocument } from "@langchain/core/documents";
 import { ConfigLoader } from "../../config/loader";
-import { TextSplitterFactory } from "../../factory/textSplitterFactory";
+import { createTextSplitter } from "../../factory/textSplitterFactory";
 import type { Document } from "../../types";
 import type { IDocumentProcessor } from "../interfaces/IDocumentProcessor";
 
@@ -13,7 +13,7 @@ export class DocumentProcessor implements IDocumentProcessor {
 
   async splitDocuments(documents: Document[]): Promise<Document[]> {
     const config = this.configLoader.getConfig();
-    const textSplitter = TextSplitterFactory.create(config.chunking);
+    const textSplitter = createTextSplitter(config.chunking);
     const langChainDocs = documents.map((doc) => this.convertToLangChainDoc(doc));
     const splitDocs = await textSplitter.splitDocuments(langChainDocs);
     return splitDocs.map((doc) => this.convertFromLangChainDoc(doc));

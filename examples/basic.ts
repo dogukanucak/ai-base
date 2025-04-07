@@ -16,7 +16,8 @@ async function example() {
   const result = await flow.execute({
     query: "Culinary Arts",
     urls: ["https://culinary.ieu.edu.tr/en/hakkimizda"],
-    searchResults: undefined,
+    documents: [],
+    searchResults: [],
     aiResponse: undefined,
   });
 

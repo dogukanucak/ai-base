@@ -1,7 +1,7 @@
 import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
 import { FlowNode } from "@core/flow/base";
 import type { SearchResult } from "@core/types";
-import { Document as LangChainDocument } from "@langchain/core/documents";
+import type { Document } from "@langchain/core/documents";
 import * as cheerio from "cheerio";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
@@ -9,7 +9,8 @@ import { MemoryVectorStore } from "langchain/vectorstores/memory";
 export interface WebSearchState {
   query: string;
   urls: string[];
-  searchResults?: SearchResult[];
+  documents: Document[];
+  searchResults: SearchResult[];
   aiResponse?: string;
 }
 
@@ -50,19 +51,16 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
         const chunks = await this.textSplitter.createDocuments([content]);
 
         // Create documents with metadata for this URL
-        const documents = chunks.map(
-          (chunk) =>
-            new LangChainDocument({
-              pageContent: chunk.pageContent,
-              metadata: {
-                source: url,
-                title: this.extractTitle($),
-                type: "web",
-                domain: new URL(url).hostname,
-                lastFetched: new Date().toISOString(),
-              },
-            }),
-        );
+        const documents = chunks.map((chunk) => ({
+          pageContent: chunk.pageContent,
+          metadata: {
+            source: url,
+            title: this.extractTitle($),
+            type: "web",
+            domain: new URL(url).hostname,
+            lastFetched: new Date().toISOString(),
+          },
+        }));
 
         // Create a new vector store for this URL's content
         const vectorStore = new MemoryVectorStore(this.embeddings);
@@ -75,8 +73,8 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
         allSearchResults.push(
           ...results
             .filter(([_, score]) => score > 0.5)
-            .map(([document, score]: [LangChainDocument, number]) => ({
-              document: new LangChainDocument({
+            .map(([document, score]: [Document, number]) => ({
+              document: {
                 pageContent: document.pageContent,
                 metadata: {
                   source: url,
@@ -85,7 +83,7 @@ export class WebSearchNode extends FlowNode<WebSearchState, WebSearchState> {
                   domain: new URL(url).hostname,
                   lastFetched: new Date().toISOString(),
                 },
-              }),
+              },
               score,
             })),
         );

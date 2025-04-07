@@ -3,6 +3,7 @@ import { FlowNode } from "@core/flow/base";
 import type { Document } from "@langchain/core/documents";
 import type { RAGSystem } from "@core/rag";
 import type { SearchResult } from "@core/types";
+import type { WebSearchState } from "@core/flow/web-flows/web-content-loader-node";
 
 export interface DocumentState {
   documents: Document[];
@@ -22,7 +23,7 @@ export interface CombinedSearchState extends QueryState {
 }
 
 // Document loading node
-export class DocumentLoadingNode extends FlowNode<DocumentState, DocumentState> {
+export class DocumentLoadingNode extends FlowNode<WebSearchState, WebSearchState> {
   constructor(
     private rag: RAGSystem,
     private path: string,
@@ -30,10 +31,10 @@ export class DocumentLoadingNode extends FlowNode<DocumentState, DocumentState> 
     super();
   }
 
-  async process(state: DocumentState): Promise<DocumentState> {
+  async process(state: WebSearchState): Promise<Partial<WebSearchState>> {
     const documents = await this.rag.loadDocuments(this.path);
     await this.rag.addDocuments(documents);
-    return { ...state, documents };
+    return { documents };
   }
 }
 
@@ -66,12 +67,12 @@ export class AIResponseNode extends FlowNode<QueryState, AIResponseState> {
 }
 
 // Combine results node for web and document search
-export class CombineResultsNode extends FlowNode<CombinedSearchState, CombinedSearchState> {
+export class CombineResultsNode extends FlowNode<WebSearchState, WebSearchState> {
   constructor(private rag: RAGSystem) {
     super();
   }
 
-  async process(state: CombinedSearchState): Promise<CombinedSearchState> {
+  async process(state: WebSearchState): Promise<Partial<WebSearchState>> {
     // Get web search results (already in state.searchResults)
     const webResults = state.searchResults || [];
 
@@ -87,6 +88,6 @@ export class CombineResultsNode extends FlowNode<CombinedSearchState, CombinedSe
         index === self.findIndex((r) => r.document.pageContent === result.document.pageContent),
     );
 
-    return { ...state, searchResults: uniqueResults };
+    return { searchResults: uniqueResults };
   }
 }
