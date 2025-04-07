@@ -1,10 +1,10 @@
 import { OpenAIClient } from "@ai-base/core/ai/openAIClient";
 import type { RAGConfig } from "@ai-base/core/config/types";
 import { RAGSystem } from "@ai-base/core/rag";
+import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { Server } from "../Server";
 import { ResponseFormatter } from "../services/ResponseFormatter";
 import { SimilarityService } from "../services/SimilarityService";
-import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import type { QueryRequest } from "./types";
 import type { Plugin } from "./types";
 

@@ -1,6 +1,6 @@
 import os from "node:os";
-import type { FastifyInstance } from "fastify";
 import type { RAGConfig } from "@ai-base/core/config/types";
+import type { FastifyInstance } from "fastify";
 import type { Server } from "../../Server";
 import type { Plugin } from "../types";
 

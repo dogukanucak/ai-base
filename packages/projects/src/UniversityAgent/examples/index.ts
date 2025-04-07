@@ -5,9 +5,9 @@ import { ConfigLoader } from "@ai-base/core/config/loader";
 import { FlowBuilder } from "@ai-base/core/flow/base";
 import {
   AIResponseNode,
+  type AIResponseState,
   DocumentLoadingNode,
   DocumentRetrievalNode,
-  type AIResponseState,
 } from "@ai-base/core/flow/nodes";
 import { RAGSystem } from "@ai-base/core/rag";
 import dotenv from "dotenv";

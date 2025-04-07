@@ -1,6 +1,6 @@
 import { ConfigLoader } from "@ai-base/core/config/loader";
-import { Server } from "./Server";
 import dotenv from "dotenv";
+import { Server } from "./Server";
 
 async function startServer() {
   try {

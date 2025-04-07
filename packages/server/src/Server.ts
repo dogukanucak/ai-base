@@ -1,10 +1,10 @@
 import { ConfigLoader } from "@ai-base/core/config/loader";
 import type { RAGConfig } from "@ai-base/core/config/types";
 import cors from "@fastify/cors";
+import fastify, { type FastifyInstance } from "fastify";
 import { BackofficePlugin } from "./plugins/backoffice/BackofficePlugin";
 import { RAGPlugin } from "./plugins/ragPlugin";
 import type { Plugin } from "./plugins/types";
-import fastify, { type FastifyInstance } from "fastify";
 
 export class Server {
   private app: FastifyInstance;

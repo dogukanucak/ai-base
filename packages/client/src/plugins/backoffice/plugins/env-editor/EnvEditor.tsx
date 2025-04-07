@@ -79,7 +79,11 @@ export const EnvEditor = () => {
                     <span class={variable.isSecret ? styles.secretValue : ""}>
                       {variable.isSecret ? "••••••••" : variable.value}
                     </span>
-                    <button class={styles.editButton} onClick={() => startEditing(variable)} type="button">
+                    <button
+                      class={styles.editButton}
+                      onClick={() => startEditing(variable)}
+                      type="button"
+                    >
                       Edit
                     </button>
                   </div>

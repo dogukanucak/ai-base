@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { DocumentLoaderConfig } from "../config/types";
-import { MarkdownLoader } from "../documents/loader";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import type { BaseDocumentLoader } from "@langchain/core/document_loaders/base";
 import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 import { TextLoader } from "langchain/document_loaders/fs/text";
+import type { DocumentLoaderConfig } from "../config/types";
+import { MarkdownLoader } from "../documents/loader";
 
 export function createDocumentLoader(config: DocumentLoaderConfig): BaseDocumentLoader {
   const { path: docsPath } = config;

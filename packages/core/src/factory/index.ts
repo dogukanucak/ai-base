@@ -1,16 +1,16 @@
 import type {
   DocumentLoaderConfig,
   EmbeddingConfig,
-  VectorStoreConfig,
   RetrievalConfig,
+  VectorStoreConfig,
 } from "@core/config/types";
 import { MarkdownLoader } from "@core/documents/loader";
 import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
 import type { DocumentLoader } from "@core/types";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import type { Embeddings } from "@langchain/core/embeddings";
-import type { VectorStore } from "@langchain/core/vectorstores";
 import type { BaseRetriever } from "@langchain/core/retrievers";
+import type { VectorStore } from "@langchain/core/vectorstores";
 import { createRetriever as factoryCreateRetriever } from "./retrieverFactory";
 
 export function createEmbeddingGenerator(config: EmbeddingConfig): Embeddings {

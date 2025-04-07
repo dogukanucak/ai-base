@@ -1,9 +1,9 @@
-import type { ChunkingConfig } from "../config/types";
 import {
   CharacterTextSplitter,
   RecursiveCharacterTextSplitter,
   type TextSplitter,
 } from "langchain/text_splitter";
+import type { ChunkingConfig } from "../config/types";
 
 export function createTextSplitter(config: ChunkingConfig): TextSplitter {
   return new RecursiveCharacterTextSplitter({

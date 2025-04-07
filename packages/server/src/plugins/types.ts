@@ -1,6 +1,6 @@
 import type { RAGConfig } from "@ai-base/core/config/types";
-import type { Server } from "../Server";
 import type { FastifyInstance } from "fastify";
+import type { Server } from "../Server";
 
 export interface Plugin {
   name: string;

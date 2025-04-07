@@ -1,9 +1,9 @@
 import type { OpenAIClient } from "@core/ai/openAIClient";
 import { FlowNode } from "@core/flow/base";
-import type { Document } from "@langchain/core/documents";
+import type { WebSearchState } from "@core/flow/web-flows/web-content-loader-node";
 import type { RAGSystem } from "@core/rag";
 import type { SearchResult } from "@core/types";
-import type { WebSearchState } from "@core/flow/web-flows/web-content-loader-node";
+import type { Document } from "@langchain/core/documents";
 
 export interface DocumentState {
   documents: Document[];

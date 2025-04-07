@@ -1,7 +1,7 @@
-import { Document as LangChainDocument } from "@langchain/core/documents";
 import { ConfigLoader } from "@core/config/loader";
 import { createTextSplitter } from "@core/factory/textSplitterFactory";
 import type { Document } from "@core/types";
+import { Document as LangChainDocument } from "@langchain/core/documents";
 import type { IDocumentProcessor } from "../interfaces/IDocumentProcessor";
 
 export class DocumentProcessor implements IDocumentProcessor {
