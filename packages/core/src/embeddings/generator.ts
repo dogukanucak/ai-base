@@ -10,6 +10,11 @@ type FeatureExtractionPipeline = (
   options: { pooling: string; normalize: boolean },
 ) => Promise<FeatureExtractionOutput>;
 
+type HFPipeline = (
+  text: string,
+  options: { pooling: string; normalize: boolean },
+) => Promise<FeatureExtractionOutput>;
+
 export class TransformersEmbeddingGenerator extends Embeddings {
   private model: FeatureExtractionPipeline | null = null;
   private modelName: string;
@@ -21,10 +26,7 @@ export class TransformersEmbeddingGenerator extends Embeddings {
 
   private async initModel(): Promise<FeatureExtractionPipeline> {
     if (!this.model) {
-      this.model = (await pipeline(
-        "feature-extraction",
-        this.modelName,
-      )) as FeatureExtractionPipeline;
+      this.model = (await pipeline("feature-extraction", this.modelName)) as unknown as HFPipeline;
     }
     return this.model;
   }

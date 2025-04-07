@@ -1,9 +1,9 @@
-import type { OpenAIClient } from "../ai/openAIClient";
-import { FlowNode } from "./base";
+import type { OpenAIClient } from "@core/ai/openAIClient";
+import { FlowNode } from "@core/flow/base";
 import type { Document } from "@langchain/core/documents";
-import type { RAGSystem } from "../rag";
-import type { SearchResult } from "../types";
-import type { WebSearchState } from "./web-flows/web-content-loader-node";
+import type { RAGSystem } from "@core/rag";
+import type { SearchResult } from "@core/types";
+import type { WebSearchState } from "@core/flow/web-flows/web-content-loader-node";
 
 export interface DocumentState {
   documents: Document[];
@@ -11,7 +11,7 @@ export interface DocumentState {
 
 export interface QueryState extends DocumentState {
   query: string;
-  results?: Document[];
+  results?: SearchResult[];
 }
 
 export interface AIResponseState extends QueryState {

@@ -7,6 +7,7 @@ import {
   AIResponseNode,
   DocumentLoadingNode,
   DocumentRetrievalNode,
+  type AIResponseState,
 } from "@ai-base/core/flow/nodes";
 import { RAGSystem } from "@ai-base/core/rag";
 import dotenv from "dotenv";
@@ -25,21 +26,22 @@ async function example() {
   });
 
   // Create a RAG flow with AI
-  const flow = new FlowBuilder()
+  const flow = new FlowBuilder<AIResponseState>()
     .addNode("load", new DocumentLoadingNode(rag, "packages/projects/src/UniversityAgent/data"))
     .addNode("retrieve", new DocumentRetrievalNode(rag))
     .addNode("generate", new AIResponseNode(openai));
 
   // Use the flow
-  const result = await flow.execute({
+  const result = (await flow.execute({
     query: "What are the admission requirements?",
-    searchResults: [],
+    documents: [],
+    results: [],
     aiResponse: undefined,
-  });
+  })) as AIResponseState;
 
   console.log("Query:", result.query);
   console.log("\nAI Response:", result.aiResponse);
-  console.log("\nBased on documents:", result.searchResults?.length || 0);
+  console.log("\nBased on documents:", result.results?.length || 0);
 }
 
 example().catch(console.error);

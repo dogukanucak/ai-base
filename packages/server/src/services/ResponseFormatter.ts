@@ -10,7 +10,8 @@ export class ResponseFormatter {
   }
 
   formatResponse(query: string, relevantResults: SearchResult[]): QueryResponse {
-    const scoreThreshold = this.config.retrieval?.scoreThreshold ?? 0.7;
+    const scoreThreshold =
+      (this.config.retrieval as { scoreThreshold?: number })?.scoreThreshold ?? 0.7;
 
     return {
       query,

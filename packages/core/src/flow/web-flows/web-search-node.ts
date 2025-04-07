@@ -1,6 +1,6 @@
-import { TransformersEmbeddingGenerator } from "../../embeddings/generator";
-import { FlowNode } from "../base";
-import type { SearchResult } from "../../types";
+import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
+import { FlowNode } from "@core/flow/base";
+import type { SearchResult } from "@core/types";
 import type { Document } from "@langchain/core/documents";
 import * as cheerio from "cheerio";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";

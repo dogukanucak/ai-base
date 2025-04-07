@@ -50,7 +50,9 @@ export class Server {
   }
 
   public updateConfig(config: Partial<RAGConfig>): void {
-    ConfigLoader.getInstance().updateConfig(config);
+    (
+      ConfigLoader.getInstance() as { updateConfig: (config: Partial<RAGConfig>) => void }
+    ).updateConfig(config);
     this.config = ConfigLoader.getInstance().getConfig();
   }
 }

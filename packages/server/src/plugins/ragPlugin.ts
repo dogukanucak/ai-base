@@ -118,8 +118,8 @@ export class RAGPlugin implements Plugin {
     const { query } = request.body;
     const searchResults = await this.similarityService.findRelevantDocuments(
       query,
-      this.config.retrieval.fetchK || 5,
-      this.config.retrieval.scoreThreshold || 0.7,
+      (this.config.retrieval as { fetchK?: number }).fetchK || 5,
+      (this.config.retrieval as { scoreThreshold?: number }).scoreThreshold || 0.7,
     );
     const aiResponse = await this.openAIClient.getResponse(query, searchResults);
     const response = this.responseFormatter.formatResponse(query, searchResults);

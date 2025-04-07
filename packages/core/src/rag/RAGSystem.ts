@@ -1,7 +1,7 @@
-import { ConfigLoader } from "../config/loader";
-import { createDocumentLoader } from "../factory/documentLoaderFactory";
+import { ConfigLoader } from "@core/config/loader";
+import { createDocumentLoader } from "@core/factory/documentLoaderFactory";
 import type { Document } from "@langchain/core/documents";
-import type { SearchResult } from "../types";
+import type { SearchResult } from "@core/types";
 import dotenv from "dotenv";
 import { ChromaVectorStore } from "./services/ChromaVectorStore";
 import { DocumentProcessor } from "./services/DocumentProcessor";

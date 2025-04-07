@@ -13,6 +13,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@core/*": ["packages/core/src/*"],
       "@ai-base/core/*": ["packages/core/src/*"],
       "@ai-base/server/*": ["packages/server/src/*"],
       "@ai-base/projects/*": ["packages/projects/src/*"],

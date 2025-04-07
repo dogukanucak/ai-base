@@ -6,14 +6,12 @@ export async function createRetriever(
   vectorStore: VectorStore,
   config: RetrievalConfig,
 ): Promise<BaseRetriever> {
-  const { searchType, fetchK, scoreThreshold } = config;
+  const { type, fetchK, scoreThreshold } = config;
 
-  if (searchType === "mmr") {
+  if (type === "mmr") {
     return vectorStore.asRetriever({
       searchType: "mmr",
       k: fetchK || 4,
-      fetchK: (fetchK || 4) * 2,
-      lambda: 0.5,
       filter: scoreThreshold ? { score: { $gte: scoreThreshold } } : undefined,
     });
   }

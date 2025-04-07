@@ -1,7 +1,7 @@
 import { Chroma } from "@langchain/community/vectorstores/chroma";
-import { ConfigLoader } from "../../config/loader";
-import { TransformersEmbeddingGenerator } from "../../embeddings/generator";
-import type { Document, SearchResult } from "../../types";
+import { ConfigLoader } from "@core/config/loader";
+import { TransformersEmbeddingGenerator } from "@core/embeddings/generator";
+import type { Document, SearchResult } from "@core/types";
 import type { IVectorStore } from "../interfaces/IVectorStore";
 
 export class ChromaVectorStore implements IVectorStore {

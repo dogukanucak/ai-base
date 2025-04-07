@@ -1,8 +1,8 @@
-import { FlowNode } from "../base";
-import type { RAGSystem } from "../../rag";
+import { FlowNode } from "@core/flow/base";
+import type { RAGSystem } from "@core/rag";
 import type { Document } from "@langchain/core/documents";
 import * as cheerio from "cheerio";
-import type { SearchResult } from "../../types";
+import type { SearchResult } from "@core/types";
 
 export interface WebSearchState {
   query: string;
