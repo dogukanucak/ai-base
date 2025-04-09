@@ -38,7 +38,10 @@ export class ChromaVectorStore implements IVectorStore {
   async findSimilar(query: string, limit = 5): Promise<SearchResult[]> {
     const results = await this.vectorStore.similaritySearchWithScore(query, limit);
     return results.map(([doc, score]) => ({
-      document: doc,
+      document: {
+        pageContent: doc.pageContent,
+        metadata: doc.metadata || {},
+      },
       score: score,
     }));
   }

@@ -53,6 +53,8 @@ export class MarkdownLoader extends BaseDocumentLoader {
             pageContent: body.trim(),
             metadata: {
               ...attributes,
+              source: relativePath,
+              type: "markdown",
               filepath: relativePath,
             },
           }),

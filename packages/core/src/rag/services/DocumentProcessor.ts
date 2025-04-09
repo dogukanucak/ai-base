@@ -22,14 +22,14 @@ export class DocumentProcessor implements IDocumentProcessor {
   convertToLangChainDoc(doc: Document): LangChainDocument {
     return new LangChainDocument({
       pageContent: doc.pageContent,
-      metadata: doc.metadata,
+      metadata: doc.metadata || {},
     });
   }
 
   convertFromLangChainDoc(doc: LangChainDocument): Document {
     return {
       pageContent: doc.pageContent,
-      metadata: doc.metadata,
+      metadata: doc.metadata || {},
     };
   }
 }
