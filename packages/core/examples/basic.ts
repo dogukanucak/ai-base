@@ -14,7 +14,7 @@ async function example() {
 
   // Use the flow to search for content in documents and web pages
   const result = await flow.execute({
-    query: "Culinary Arts",
+    query: "Application Performance Monitoring (APM)",
     urls: ["https://culinary.ieu.edu.tr/en/hakkimizda"],
     documents: [],
     searchResults: [],

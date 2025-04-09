@@ -7,8 +7,20 @@ export const defaultConfig: RAGConfig = {
   chunking: {
     type: "markdown",
     chunkSize: 500,
-    chunkOverlap: 50,
-    separators: ["## ", "# ", "\n### ", "\n## ", "\n# ", "\n\n", "\n", ". ", " "],
+    chunkOverlap: 100,
+    separators: [
+      "\n## ",
+      "\n### ",
+      "\n#### ",
+      "\n##### ",
+      "\n###### ",
+      "\n\n",
+      "\n",
+      ". ",
+      "! ",
+      "? ",
+      " ",
+    ],
     encodingName: "cl100k_base",
     tokenBudget: {
       maxTokens: 500,

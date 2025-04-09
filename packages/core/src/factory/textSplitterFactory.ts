@@ -1,14 +1,23 @@
 import {
-  CharacterTextSplitter,
+  MarkdownTextSplitter,
   RecursiveCharacterTextSplitter,
   type TextSplitter,
 } from "langchain/text_splitter";
 import type { ChunkingConfig } from "../config/types";
 
 export function createTextSplitter(config: ChunkingConfig): TextSplitter {
+  const { type, chunkSize = 1000, chunkOverlap = 200, separators } = config;
+
+  if (type === "markdown") {
+    return new MarkdownTextSplitter({
+      chunkSize,
+      chunkOverlap,
+    });
+  }
+
   return new RecursiveCharacterTextSplitter({
-    chunkSize: config.chunkSize || 1000,
-    chunkOverlap: config.chunkOverlap || 200,
-    separators: config.separators || ["\n\n", "\n", " ", ""],
+    chunkSize,
+    chunkOverlap,
+    separators: separators || ["\n\n", "\n", ". ", " ", ""],
   });
 }

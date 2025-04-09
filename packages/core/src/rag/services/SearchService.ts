@@ -15,6 +15,7 @@ export class SearchService implements ISearchService {
   }
 
   async search(query: string, limit = 5): Promise<SearchResult[]> {
+    // Get more results than needed to allow for filtering
     const results = await this.vectorStore.findSimilar(query, limit * 2);
     return this.filterResults(results, limit);
   }
@@ -24,18 +25,24 @@ export class SearchService implements ISearchService {
   }
 
   filterResults(results: SearchResult[], limit: number): SearchResult[] {
-    // Filter by threshold and sort by score
+    // Filter by threshold and normalize scores
     const filteredResults = results
       .filter((result) => result.score >= this.similarityThreshold)
+      .map((result) => ({
+        ...result,
+        // Normalize score to be between 0 and 1
+        score: Math.min(Math.max(result.score, 0), 1),
+      }))
       .sort((a, b) => b.score - a.score);
 
-    // Remove duplicates based on content
+    // Remove duplicates based on content similarity
     const uniqueResults: SearchResult[] = [];
     const seenContent = new Set<string>();
 
     for (const result of filteredResults) {
       const content = result.document.pageContent.trim();
-      if (!seenContent.has(content)) {
+      // Simple deduplication based on content similarity
+      if (!this.hasVerySimilarContent(content, seenContent)) {
         seenContent.add(content);
         uniqueResults.push(result);
         if (uniqueResults.length >= limit) break;
@@ -43,5 +50,23 @@ export class SearchService implements ISearchService {
     }
 
     return uniqueResults;
+  }
+
+  private hasVerySimilarContent(content: string, seenContent: Set<string>): boolean {
+    // Simple similarity check based on content overlap
+    for (const seen of seenContent) {
+      const similarity = this.calculateContentSimilarity(content, seen);
+      if (similarity > 0.8) return true;
+    }
+    return false;
+  }
+
+  private calculateContentSimilarity(a: string, b: string): number {
+    // Simple Jaccard similarity for quick content comparison
+    const wordsA = new Set(a.toLowerCase().split(/\s+/));
+    const wordsB = new Set(b.toLowerCase().split(/\s+/));
+    const intersection = new Set([...wordsA].filter((x) => wordsB.has(x)));
+    const union = new Set([...wordsA, ...wordsB]);
+    return intersection.size / union.size;
   }
 }
