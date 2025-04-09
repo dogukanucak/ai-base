@@ -24,5 +24,8 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "^1.9.4"
+  },
+  "dependencies": {
+    "pdf-parse": "^1.1.1"
   }
 }
