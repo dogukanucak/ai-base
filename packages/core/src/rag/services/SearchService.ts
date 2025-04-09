@@ -25,14 +25,9 @@ export class SearchService implements ISearchService {
   }
 
   filterResults(results: SearchResult[], limit: number): SearchResult[] {
-    // Filter by threshold and normalize scores
+    // Filter by threshold and preserve original scores
     const filteredResults = results
       .filter((result) => result.score >= this.similarityThreshold)
-      .map((result) => ({
-        ...result,
-        // Normalize score to be between 0 and 1
-        score: Math.min(Math.max(result.score, 0), 1),
-      }))
       .sort((a, b) => b.score - a.score);
 
     // Remove duplicates based on content similarity
