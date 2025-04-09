@@ -1,12 +1,15 @@
 # Embedding
 EMBEDDING_MODEL=Xenova/all-MiniLM-L6-v2
-LOCAL_MODEL_PATH=models/all-MiniLM-L6-v2
+LOCAL_MODEL_PATH=/Users/dogukanucak/Projects/AI-Projects/ai-base/models/all-MiniLM-L6-v2
 
 # OpenAI
 USE_OPENAI=false
 OPENAI_MODEL=gpt-4-turbo-preview
 OPENAI_MAX_TOKENS=1000
 OPENAI_TEMPERATURE=0.7
+
+# University Search
+UNIVERSITY_SEARCH_URL=https://www.ieu.edu.tr/anasayfa/ajax/search.php
 
 # Chunking
 CHUNKING_TYPE=markdown
