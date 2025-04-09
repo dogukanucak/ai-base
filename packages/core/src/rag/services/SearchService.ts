@@ -51,7 +51,7 @@ export class SearchService implements ISearchService {
     // Simple similarity check based on content overlap
     for (const seen of seenContent) {
       const similarity = this.calculateContentSimilarity(content, seen);
-      if (similarity > 0.8) return true;
+      if (similarity > 0.95) return true; // Only consider almost identical content as duplicates
     }
     return false;
   }

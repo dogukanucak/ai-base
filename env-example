@@ -8,21 +8,18 @@ OPENAI_MODEL=gpt-4-turbo-preview
 OPENAI_MAX_TOKENS=1000
 OPENAI_TEMPERATURE=0.7
 
-# University Search
-UNIVERSITY_SEARCH_URL=https://www.ieu.edu.tr/anasayfa/ajax/search.php
-
 # Chunking
 CHUNKING_TYPE=markdown
-CHUNK_SIZE=1000
-CHUNK_OVERLAP=100
-CHUNK_SEPARATORS=["\n\n", "\n## ", "\n### ", "\n# ", ". ", "! ", "? ", "\n", " "]
+CHUNK_SIZE=3000
+CHUNK_OVERLAP=300
+CHUNK_SEPARATORS=["\n# ", "\n## ", "\n### ", "\n#### ", "\n##### ", "\n###### ", "\n\n", "\n", ". ", "! ", "? ", " "]
 TOKEN_ENCODING=cl100k_base
 TOKEN_BUDGET=2000
 
 # Retrieval
 RETRIEVAL_TYPE=similarity
-FETCH_K=5
-SCORE_THRESHOLD=0.8
+FETCH_K=10
+SCORE_THRESHOLD=0.5
 
 # Vector Store
 COLLECTION_NAME=documents
@@ -39,5 +36,5 @@ TRUNCATE_DOCUMENTS=false
 DOCUMENT_PREVIEW_LENGTH=10000
 
 # Vector Store Configuration
-SIMILARITY_THRESHOLD=0.8
+SIMILARITY_THRESHOLD=0.5
 VECTOR_STORE_PATH=data/vectors.json 
